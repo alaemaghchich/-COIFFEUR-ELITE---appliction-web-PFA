@@ -1,0 +1,105 @@
+/* BarberHub Luxury Theme */
+
+:root {
+    --gold: #D4AF37;
+    --gold-hover: #C5A028;
+    --dark-bg: #0A0A0A;
+    --darker-bg: #050505;
+    --light-text: #F5F5F5;
+    --gray-text: #A0A0A0;
+    --luxury-border: 1px solid rgba(212, 175, 55, 0.3);
+}
+
+body {
+    background-color: var(--dark-bg);
+    color: var(--light-text);
+    font-family: 'Playfair Display', serif; /* Elegant font for luxury */
+}
+
+h1, h2, h3, h4, h5, h6 {
+    color: var(--gold);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.btn-gold {
+    background-color: var(--gold);
+    color: var(--dark-bg);
+    border: none;
+    font-weight: bold;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+}
+
+.btn-gold:hover {
+    background-color: var(--gold-hover);
+    color: #fff;
+    box-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
+}
+
+.card-luxury {
+    background-color: var(--darker-bg);
+    border: var(--luxury-border);
+    border-radius: 10px;
+    transition: transform 0.3s ease;
+}
+
+.card-luxury:hover {
+    transform: translateY(-5px);
+    border-color: var(--gold);
+}
+
+.navbar-luxury {
+    background-color: var(--darker-bg);
+    border-bottom: var(--luxury-border);
+}
+
+.nav-link {
+    color: var(--light-text) !important;
+}
+
+.nav-link:hover, .nav-link.active {
+    color: var(--gold) !important;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--darker-bg);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--gold);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--gold-hover);
+}
+
+/* Forms */
+.form-control, .form-select {
+    background-color: #1A1A1A;
+    border: 1px solid #333;
+    color: var(--light-text);
+}
+
+.form-control:focus, .form-select:focus {
+    background-color: #222;
+    border-color: var(--gold);
+    color: var(--light-text);
+    box-shadow: 0 0 5px rgba(212, 175, 55, 0.3);
+}
+
+.text-gold {
+    color: var(--gold) !important;
+}
+
+/* Dashboard Sidebar */
+.sidebar {
+    background-color: var(--darker-bg);
+    border-right: var(--luxury-border);
+    min-height: 100vh;
+}
