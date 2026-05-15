@@ -66,17 +66,3 @@ Barbers are registered with a `pending` status. They cannot log in until the Adm
 
 ### 5. Google Maps Integration
 Uses the Browser Geolocation API to capture `latitude` and `longitude` during barber registration, which is then used to generate direct Google Maps links on the barber's profile.
-
----
-
-## 🔧 Installation
-1. Clone the repository to your local server (e.g., XAMPP/WAMP).
-2. Import `database.sql` into your MySQL server.
-3. Update `config/db.php` with your database credentials.
-4. Default Admin Login:
-   - **Email:** `admin@barberhub.com`
-   - **Password:** `Admin_00393690`
-
----
-
-Developed by **Gemini CLI** for BarberHub.
