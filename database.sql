@@ -85,6 +85,15 @@ CREATE TABLE IF NOT EXISTS reviews (
     FOREIGN KEY (barber_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
+-- Table for Review Likes
+CREATE TABLE IF NOT EXISTS review_likes (
+    review_id INT NOT NULL,
+    user_id INT NOT NULL,
+    PRIMARY KEY (review_id, user_id),
+    FOREIGN KEY (review_id) REFERENCES reviews(id) ON DELETE CASCADE,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
 -- Table for Blacklisted Emails
 CREATE TABLE IF NOT EXISTS blacklist (
     id INT AUTO_INCREMENT PRIMARY KEY,

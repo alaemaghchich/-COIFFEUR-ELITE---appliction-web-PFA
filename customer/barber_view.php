@@ -21,38 +21,79 @@ if(!$barber_id) {
 
 $barber = $barberObj->getBarberDetails($barber_id);
 $services = $serviceObj->getByBarber($barber_id);
-$reviews = $reviewObj->getByBarber($barber_id);
+$reviews = $reviewObj->getByBarber($barber_id, $_SESSION['user_id'] ?? null);
 
-$success = "";
-$error = "";
+$success = $_SESSION['success'] ?? "";
+$error = $_SESSION['error'] ?? "";
+unset($_SESSION['success'], $_SESSION['error']);
 
-if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['book_now'])) {
-    if(!isset($_SESSION['user_id'])) {
-        header("Location: /auth/login.php");
+if($_SERVER['REQUEST_METHOD'] == 'POST') {
+    if(isset($_POST['book_now'])) {
+        if(!isset($_SESSION['user_id'])) {
+            header("Location: /auth/login.php");
+            exit();
+        }
+        
+        $customer_id = $_SESSION['user_id'];
+        $date = $_POST['booking_date'];
+        $start_time = $_POST['booking_time'];
+        $selected_services = $_POST['services'] ?? [];
+        
+        // Calculate end time and total price
+        $total_duration = 0;
+        $total_price = 0;
+        foreach($services as $s) {
+            if(in_array($s['id'], $selected_services)) {
+                $total_duration += $s['duration'];
+                $total_price += $s['price'];
+            }
+        }
+        
+        $end_time = date('H:i:s', strtotime($start_time . " + $total_duration minutes"));
+        
+        $new_booking_id = $bookingObj->create($customer_id, $barber_id, $date, $start_time, $end_time, $total_price, $selected_services);
+        if($new_booking_id) {
+            $_SESSION['success'] = "Booking request sent successfully!";
+            header("Location: booking_details.php?id=$new_booking_id");
+            exit();
+        } else {
+            $_SESSION['error'] = "Booking failed. Please try again.";
+        }
+        header("Location: barber_view.php?id=$barber_id");
         exit();
     }
-    
-    $customer_id = $_SESSION['user_id'];
-    $date = $_POST['booking_date'];
-    $start_time = $_POST['booking_time'];
-    $selected_services = $_POST['services']; // Array of IDs
-    
-    // Calculate end time and total price
-    $total_duration = 0;
-    $total_price = 0;
-    foreach($services as $s) {
-        if(in_array($s['id'], $selected_services)) {
-            $total_duration += $s['duration'];
-            $total_price += $s['price'];
+
+    if(isset($_POST['add_review'])) {
+        if(!isset($_SESSION['user_id'])) {
+            header("Location: /auth/login.php");
+            exit();
         }
+
+        $customer_id = $_SESSION['user_id'];
+        $rating = $_POST['rating'];
+        $comment = $_POST['comment'];
+        
+        if($reviewObj->create($customer_id, $barber_id, $rating, $comment)) {
+            $_SESSION['success'] = "Review added successfully!";
+        } else {
+            $_SESSION['error'] = "Failed to add review.";
+        }
+        header("Location: barber_view.php?id=$barber_id");
+        exit();
     }
-    
-    $end_time = date('H:i:s', strtotime($start_time . " + $total_duration minutes"));
-    
-    if($bookingObj->create($customer_id, $barber_id, $date, $start_time, $end_time, $total_price, $selected_services)) {
-        $success = "Booking request sent successfully!";
-    } else {
-        $error = "Booking failed. Please try again.";
+
+    if(isset($_POST['update_review'])) {
+        if(!isset($_SESSION['user_id'])) exit();
+        $reviewObj->update($_POST['review_id'], $_SESSION['user_id'], $_POST['rating'], $_POST['comment']);
+        header("Location: barber_view.php?id=$barber_id");
+        exit();
+    }
+
+    if(isset($_POST['delete_review'])) {
+        if(!isset($_SESSION['user_id'])) exit();
+        $reviewObj->delete($_POST['review_id'], $_SESSION['user_id']);
+        header("Location: barber_view.php?id=$barber_id");
+        exit();
     }
 }
 ?>
@@ -132,13 +173,46 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['book_now'])) {
             </div>
 
             <!-- Reviews Section -->
-            <h3 class="mb-4">Reviews</h3>
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h3 class="mb-0">Reviews</h3>
+                <?php if(isset($_SESSION['user_id']) && $_SESSION['user_role'] == 'customer'): ?>
+                    <button class="btn btn-gold btn-sm" data-bs-toggle="collapse" data-bs-target="#reviewForm">
+                        <i class="fas fa-plus me-2"></i> Write a Review
+                    </button>
+                <?php endif; ?>
+            </div>
+
+            <?php if(isset($_SESSION['user_id']) && $_SESSION['user_role'] == 'customer'): ?>
+            <div class="collapse mb-4" id="reviewForm">
+                <div class="card-luxury p-4">
+                    <form action="barber_view.php?id=<?php echo $barber_id; ?>" method="POST">
+                        <div class="mb-3">
+                            <label class="form-label text-gray-text">Rating</label>
+                            <div class="rating-input text-gold fs-4" style="cursor: pointer;">
+                                <input type="hidden" name="rating" id="ratingValue" value="5">
+                                <i class="fas fa-star star-btn" data-value="1"></i>
+                                <i class="fas fa-star star-btn" data-value="2"></i>
+                                <i class="fas fa-star star-btn" data-value="3"></i>
+                                <i class="fas fa-star star-btn" data-value="4"></i>
+                                <i class="fas fa-star star-btn" data-value="5"></i>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label text-gray-text">Comment</label>
+                            <textarea name="comment" class="form-control" rows="3" placeholder="Share your experience..." required></textarea>
+                        </div>
+                        <button type="submit" name="add_review" class="btn btn-gold w-100">Submit Review</button>
+                    </form>
+                </div>
+            </div>
+            <?php endif; ?>
+
             <div class="card-luxury p-4">
                 <?php if(empty($reviews)): ?>
                     <p class="text-gray-text text-center">No reviews yet. Be the first to review!</p>
                 <?php else: ?>
                     <?php foreach($reviews as $r): ?>
-                    <div class="mb-4 pb-4 border-bottom border-secondary last-no-border">
+                    <div class="mb-4 pb-4 border-bottom border-secondary last-no-border" id="review-<?php echo $r['id']; ?>">
                         <div class="d-flex justify-content-between mb-2">
                             <div class="d-flex align-items-center">
                                 <img src="<?php echo $r['profile_pic'] ? '/uploads/profiles/'.$r['profile_pic'] : 'https://ui-avatars.com/api/?name='.urlencode($r['full_name']); ?>" class="rounded-circle me-3" width="40" height="40">
@@ -147,17 +221,77 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['book_now'])) {
                                     <small class="text-gray-text"><?php echo date('M d, Y', strtotime($r['created_at'])); ?></small>
                                 </div>
                             </div>
-                            <div class="text-gold">
-                                <?php for($i=0; $i<$r['rating']; $i++): ?><i class="fas fa-star"></i><?php endfor; ?>
+                            <div class="d-flex align-items-center gap-3">
+                                <div class="text-gold">
+                                    <?php for($i=0; $i<$r['rating']; $i++): ?><i class="fas fa-star"></i><?php endfor; ?>
+                                </div>
+                                <?php if(isset($_SESSION['user_id']) && $_SESSION['user_id'] == $r['customer_id']): ?>
+                                    <div class="dropdown">
+                                        <button class="btn btn-link text-gray-text p-0" data-bs-toggle="dropdown">
+                                            <i class="fas fa-ellipsis-v"></i>
+                                        </button>
+                                        <ul class="dropdown-menu dropdown-menu-dark">
+                                            <li><a class="dropdown-item edit-review-btn" href="javascript:void(0)" data-id="<?php echo $r['id']; ?>" data-rating="<?php echo $r['rating']; ?>" data-comment="<?php echo htmlspecialchars($r['comment']); ?>">Edit</a></li>
+                                            <li>
+                                                <form action="barber_view.php?id=<?php echo $barber_id; ?>" method="POST" onsubmit="return confirm('Are you sure?')">
+                                                    <input type="hidden" name="review_id" value="<?php echo $r['id']; ?>">
+                                                    <button type="submit" name="delete_review" class="dropdown-item text-danger">Delete</button>
+                                                </form>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                <?php endif; ?>
                             </div>
                         </div>
-                        <p class="text-gray-text mb-0"><?php echo $r['comment']; ?></p>
-                        <?php if($r['image']): ?>
-                            <img src="/uploads/reviews/<?php echo $r['image']; ?>" class="mt-3 rounded shadow-sm" style="max-width: 200px;">
-                        <?php endif; ?>
+                        <p class="text-gray-text mb-2 review-comment"><?php echo $r['comment']; ?></p>
+                        
+                        <div class="d-flex align-items-center">
+                            <form action="barber_view.php?id=<?php echo $barber_id; ?>" method="POST" class="like-form">
+                                <input type="hidden" name="review_id" value="<?php echo $r['id']; ?>">
+                                <input type="hidden" name="toggle_like" value="1">
+                                <button type="submit" class="btn btn-link p-0 text-decoration-none <?php echo $r['is_liked'] ? 'text-danger' : 'text-gray-text'; ?>">
+                                    <i class="<?php echo $r['is_liked'] ? 'fas' : 'far'; ?> fa-heart me-1"></i>
+                                    <span class="small"><?php echo $r['likes_count']; ?></span>
+                                </button>
+                            </form>
+                        </div>
                     </div>
                     <?php endforeach; ?>
                 <?php endif; ?>
+            </div>
+        </div>
+
+        <!-- Edit Review Modal -->
+        <div class="modal fade" id="editReviewModal" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content bg-dark border-gold">
+                    <div class="modal-header border-secondary">
+                        <h5 class="modal-title text-gold">Edit Your Review</h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                    </div>
+                    <form action="barber_view.php?id=<?php echo $barber_id; ?>" method="POST">
+                        <div class="modal-body">
+                            <input type="hidden" name="review_id" id="editReviewId">
+                            <div class="mb-3">
+                                <label class="form-label text-gray-text">Rating</label>
+                                <div class="rating-input-edit text-gold fs-4">
+                                    <input type="hidden" name="rating" id="editRatingValue">
+                                    <?php for($i=1; $i<=5; $i++): ?>
+                                        <i class="fas fa-star star-edit-btn" data-value="<?php echo $i; ?>" style="cursor: pointer;"></i>
+                                    <?php endfor; ?>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label text-gray-text">Comment</label>
+                                <textarea name="comment" id="editComment" class="form-control" rows="3" required></textarea>
+                            </div>
+                        </div>
+                        <div class="modal-footer border-secondary">
+                            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <button type="submit" name="update_review" class="btn btn-gold">Save Changes</button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
 
@@ -182,27 +316,20 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['book_now'])) {
 
                     <div class="mb-4">
                         <label class="form-label text-gray-text">Select Date</label>
-                        <input type="date" name="booking_date" class="form-control" required min="<?php echo date('Y-m-d'); ?>">
+                        <input type="date" name="booking_date" id="bookingDate" class="form-control" required min="<?php echo date('Y-m-d'); ?>">
                     </div>
 
                     <div class="mb-4">
                         <label class="form-label text-gray-text">Select Time</label>
-                        <select name="booking_time" class="form-select" required>
-                            <?php 
-                            $start = strtotime($barber['work_start']);
-                            $end = strtotime($barber['work_end']);
-                            while($start < $end) {
-                                echo '<option value="'.date('H:i', $start).'">'.date('H:i', $start).'</option>';
-                                $start = strtotime('+30 minutes', $start);
-                            }
-                            ?>
+                        <select name="booking_time" id="bookingTime" class="form-select" required disabled>
+                            <option value="">Select date & services first</option>
                         </select>
                     </div>
 
                     <div class="bg-black p-3 rounded mb-4">
                         <div class="d-flex justify-content-between mb-2">
                             <span class="text-gray-text">Total Duration:</span>
-                            <span id="totalDuration" class="text-light">0 min</span>
+                            <span id="totalDuration" class="text-light" data-value="0">0 min</span>
                         </div>
                         <div class="d-flex justify-content-between">
                             <span class="text-gray-text">Total Price:</span>
@@ -224,6 +351,9 @@ document.addEventListener('DOMContentLoaded', function() {
     const durationSpan = document.getElementById('totalDuration');
     const priceSpan = document.getElementById('totalPrice');
     const bookBtn = document.getElementById('bookBtn');
+    const bookingDate = document.getElementById('bookingDate');
+    const bookingTime = document.getElementById('bookingTime');
+    const barberId = <?php echo $barber_id; ?>;
 
     function updateTotals() {
         let totalDuration = 0;
@@ -239,12 +369,171 @@ document.addEventListener('DOMContentLoaded', function() {
         });
 
         durationSpan.textContent = totalDuration + ' min';
+        durationSpan.dataset.value = totalDuration;
         priceSpan.textContent = totalPrice + ' MAD';
-        bookBtn.disabled = selectedCount === 0;
+        bookBtn.disabled = selectedCount === 0 || !bookingDate.value || !bookingTime.value;
+        
+        if(selectedCount > 0 && bookingDate.value) {
+            fetchAvailableTimes();
+        } else {
+            bookingTime.disabled = true;
+            bookingTime.innerHTML = '<option value="">Select date & services first</option>';
+        }
+    }
+
+    function fetchAvailableTimes() {
+        const date = bookingDate.value;
+        const duration = durationSpan.dataset.value;
+
+        if(!date || duration == 0) return;
+
+        bookingTime.disabled = true;
+        bookingTime.innerHTML = '<option value="">Loading times...</option>';
+
+        fetch(`ajax_get_available_times.php?barber_id=${barberId}&date=${date}&duration=${duration}`)
+            .then(response => response.json())
+            .then(data => {
+                if(data.status === 'success') {
+                    bookingTime.innerHTML = '<option value="">Choose a time</option>';
+                    if(data.times.length === 0) {
+                        bookingTime.innerHTML = '<option value="">No available slots for this date</option>';
+                    } else {
+                        data.times.forEach(time => {
+                            const option = document.createElement('option');
+                            option.value = time.value;
+                            option.textContent = time.label;
+                            bookingTime.appendChild(option);
+                        });
+                        bookingTime.disabled = false;
+                    }
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                bookingTime.innerHTML = '<option value="">Error loading times</option>';
+            });
     }
 
     checks.forEach(check => {
         check.addEventListener('change', updateTotals);
+    });
+
+    bookingDate.addEventListener('change', updateTotals);
+    bookingTime.addEventListener('change', function() {
+        bookBtn.disabled = !this.value;
+    });
+
+    // Star Rating interaction
+    const stars = document.querySelectorAll('.star-btn');
+    const ratingValue = document.getElementById('ratingValue');
+
+    stars.forEach(star => {
+        star.addEventListener('mouseover', function() {
+            const val = this.dataset.value;
+            highlightStars(val);
+        });
+
+        star.addEventListener('mouseout', function() {
+            highlightStars(ratingValue.value);
+        });
+
+        star.addEventListener('click', function() {
+            const val = this.dataset.value;
+            ratingValue.value = val;
+            highlightStars(val);
+        });
+    });
+
+    function highlightStars(val) {
+        stars.forEach(s => {
+            if(s.dataset.value <= val) {
+                s.classList.remove('far');
+                s.classList.add('fas');
+            } else {
+                s.classList.remove('fas');
+                s.classList.add('far');
+            }
+        });
+    }
+
+    // Initialize stars (default 5)
+    highlightStars(5);
+
+    // Edit Review Logic
+    const editModal = new bootstrap.Modal(document.getElementById('editReviewModal'));
+    const editReviewBtns = document.querySelectorAll('.edit-review-btn');
+    const editRatingValue = document.getElementById('editRatingValue');
+    const editComment = document.getElementById('editComment');
+    const editReviewId = document.getElementById('editReviewId');
+    const editStars = document.querySelectorAll('.star-edit-btn');
+
+    editReviewBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+            editReviewId.value = this.dataset.id;
+            editRatingValue.value = this.dataset.rating;
+            editComment.value = this.dataset.comment;
+            updateEditStars(this.dataset.rating);
+            editModal.show();
+        });
+    });
+
+    editStars.forEach(star => {
+        star.addEventListener('click', function() {
+            const val = this.dataset.value;
+            editRatingValue.value = val;
+            updateEditStars(val);
+        });
+    });
+
+    function updateEditStars(val) {
+        editStars.forEach(s => {
+            if(s.dataset.value <= val) {
+                s.classList.remove('far');
+                s.classList.add('fas');
+            } else {
+                s.classList.remove('fas');
+                s.classList.add('far');
+            }
+        });
+    }
+
+    // AJAX Like Logic
+    const likeForms = document.querySelectorAll('.like-form');
+    likeForms.forEach(form => {
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+            formData.append('action', 'toggle_like');
+
+            fetch('ajax_review_action.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    const btn = this.querySelector('button');
+                    const icon = btn.querySelector('i');
+                    const count = btn.querySelector('span');
+                    
+                    if (data.is_liked) {
+                        btn.classList.remove('text-gray-text');
+                        btn.classList.add('text-danger');
+                        icon.classList.remove('far');
+                        icon.classList.add('fas');
+                    } else {
+                        btn.classList.remove('text-danger');
+                        btn.classList.add('text-gray-text');
+                        icon.classList.remove('fas');
+                        icon.classList.add('far');
+                    }
+                    count.textContent = data.likes_count;
+                } else if (data.message === 'Not logged in') {
+                    window.location.href = '/auth/login.php';
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        });
     });
 });
 </script>

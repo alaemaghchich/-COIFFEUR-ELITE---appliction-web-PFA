@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,7 +15,7 @@
     <link rel="stylesheet" href="/assets/css/style.css">
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-luxury sticky-top">
+    <nav class="navbar navbar-expand-lg navbar-luxury sticky-top" style="z-index : 9999">
         <div class="container">
             <a class="navbar-brand text-gold fw-bold" href="/">BARBERHUB</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -24,7 +25,7 @@
                 <ul class="navbar-nav ms-auto align-items-center">
                     <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
                     <li class="nav-item"><a class="nav-link" href="/customer/search.php">Explore</a></li>
-                    <?php session_start(); if(isset($_SESSION['user_id'])): ?>
+                    <?php if(isset($_SESSION['user_id'])): ?>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle text-gold" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
                                 <i class="fas fa-user-circle"></i> <?php echo $_SESSION['user_name']; ?>
@@ -35,6 +36,7 @@
                                 <?php elseif($_SESSION['user_role'] == 'barber'): ?>
                                     <li><a class="dropdown-item" href="/barber/dashboard.php">Dashboard</a></li>
                                 <?php else: ?>
+                                    <li><a class="dropdown-item" href="/customer/my_bookings.php"><i class="fas fa-calendar-alt me-2"></i> My Appointments</a></li>
                                     <li><a class="dropdown-item" href="/customer/profile.php">My Profile</a></li>
                                 <?php endif; ?>
                                 <li><hr class="dropdown-divider"></li>

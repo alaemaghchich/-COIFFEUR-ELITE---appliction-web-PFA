@@ -29,7 +29,7 @@ class Booking {
                 $s->bindParam(":sid", $sid);
                 $s->execute();
             }
-            return true;
+            return $booking_id;
         }
         return false;
     }
@@ -61,6 +61,17 @@ class Booking {
         return $bookings;
     }
 
+    public function getBookingsByDate($barber_id, $date) {
+        $query = "SELECT start_time, end_time FROM " . $this->table_name . " 
+                  WHERE barber_id = :barber_id AND booking_date = :date 
+                  AND status IN ('pending', 'accepted')";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(":barber_id", $barber_id);
+        $stmt->bindParam(":date", $date);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
     private function autoAccept($barber_id) {
         // Rule: If less than 1 hour remains until the booking time and status is 'pending', set to 'accepted'
         $query = "UPDATE bookings 
@@ -81,5 +92,54 @@ class Booking {
         $stmt->bindParam(":barber_id", $barber_id);
         return $stmt->execute();
     }
+
+    public function getCustomerBookings($customer_id) {
+        $query = "SELECT b.*, u.full_name as barber_name, u.phone as barber_phone, u.profile_pic as barber_pic, u.city,
+                  bd.salon_name 
+                  FROM bookings b 
+                  JOIN users u ON b.barber_id = u.id 
+                  JOIN barber_details bd ON b.barber_id = bd.user_id
+                  WHERE b.customer_id = :customer_id 
+                  ORDER BY b.booking_date DESC, b.start_time DESC";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(":customer_id", $customer_id);
+        $stmt->execute();
+        $bookings = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        foreach($bookings as &$b) {
+            $q = "SELECT s.name FROM services s 
+                  JOIN booking_services bs ON s.id = bs.service_id 
+                  WHERE bs.booking_id = :bid";
+            $s = $this->conn->prepare($q);
+            $s->bindParam(":bid", $b['id']);
+            $s->execute();
+            $b['services'] = $s->fetchAll(PDO::FETCH_COLUMN);
+        }
+        return $bookings;
+    }
+
+    public function getBookingDetails($booking_id, $customer_id) {
+        $query = "SELECT b.*, u.full_name as barber_name, u.phone as barber_phone, u.profile_pic as barber_pic, u.city,
+                  bd.salon_name, bd.salon_img, bd.lat, bd.lon
+                  FROM bookings b 
+                  JOIN users u ON b.barber_id = u.id 
+                  JOIN barber_details bd ON b.barber_id = bd.user_id
+                  WHERE b.id = :id AND b.customer_id = :customer_id";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(":id", $booking_id);
+        $stmt->bindParam(":customer_id", $customer_id);
+        $stmt->execute();
+        $booking = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if($booking) {
+            $q = "SELECT s.* FROM services s 
+                  JOIN booking_services bs ON s.id = bs.service_id 
+                  WHERE bs.booking_id = :bid";
+            $s = $this->conn->prepare($q);
+            $s->bindParam(":bid", $booking['id']);
+            $s->execute();
+            $booking['services'] = $s->fetchAll(PDO::FETCH_ASSOC);
+        }
+        return $booking;
+    }
 }
-?>

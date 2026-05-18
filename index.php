@@ -79,4 +79,52 @@
     </div>
 </section>
 
+<!-- Community Section -->
+<section class="py-5" style="background-color: #000;">
+    <div class="container py-5">
+        <div class="row align-items-center text-center text-md-start">
+            <div class="col-md-7">
+                <h2 class="display-5 fw-bold mb-4 text-gold">Join Our Grooming Community</h2>
+                <p class="lead text-light mb-4" style="opacity: 0.9;">Share your experience, rate your favorite barbers, and discover the best stylists through real reviews. Our community helps you find the perfect cut with confidence.</p>
+                <div class="d-flex flex-wrap gap-4 mb-5 justify-content-center justify-content-md-start">
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-heart text-danger fa-2x me-3"></i>
+                        <span class="text-white fs-5 fw-bold">Like Reviews</span>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-comment-dots text-gold fa-2x me-3"></i>
+                        <span class="text-white fs-5 fw-bold">Share Feedback</span>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-star text-warning fa-2x me-3"></i>
+                        <span class="text-white fs-5 fw-bold">Rate Services</span>
+                    </div>
+                </div>
+                <a href="/customer/search.php" class="btn btn-gold btn-lg px-5 py-3 shadow-lg fw-bold">
+                    EXPLORE NOW <i class="fas fa-arrow-right ms-2"></i>
+                </a>
+            </div>
+            <div class="col-md-5 mt-5 mt-md-0">
+                <div class="position-relative">
+                    <div class="card-luxury p-4 shadow" style="transform: rotate(-3deg); background-color: #0A0A0A; border: 1px solid rgba(212, 175, 55, 0.5);">
+                        <div class="d-flex align-items-center mb-3">
+                            <img src="https://ui-avatars.com/api/?name=Alex+G&background=C5A059&color=fff" class="rounded-circle me-3" width="50">
+                            <div>
+                                <h6 class="mb-0 text-white">ayoub amghoch</h6>
+                                <div class="text-gold small">
+                                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="text-white italic mb-0" style="font-style: italic;">"Best fade I've ever had! The attention to detail is unmatched. Definitely coming back."</p>
+                        <div class="mt-3 text-danger fw-bold">
+                            <i class="fas fa-heart"></i> 24 Likes
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
 <?php include 'includes/footer.php'; ?>
