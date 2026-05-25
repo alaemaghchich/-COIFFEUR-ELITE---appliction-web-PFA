@@ -61,12 +61,27 @@ $cities = ["Casablanca", "Rabat", "Marrakech", "Fes", "Tangier", "Agadir", "Mekn
                 <div class="col-md-6">
                     <div class="card-luxury p-0 overflow-hidden h-100 d-flex flex-column">
                         <div class="position-relative">
-                            <img src="<?php echo $b['profile_pic'] ? '/uploads/profiles/'.$b['profile_pic'] : 'https://images.unsplash.com/photo-1503951914875-452162b0f3f1?auto=format&fit=crop&w=400&q=80'; ?>" class="card-img-top" style="height: 250px; object-fit: cover;">
-                            <div class="position-absolute top-0 end-0 p-3">
+                            <!-- Salon image with 16:9 aspect ratio -->
+                            <img src="<?php echo $b['salon_img'] ? '/uploads/salons/'.$b['salon_img'] : 'https://images.unsplash.com/photo-1512690196236-d5a232ebbc74?auto=format&fit=crop&w=600&q=80'; ?>" class="card-img-top" style="aspect-ratio: 16/9; width: 100%; object-fit: cover; height: auto; display: block;">
+                            
+                            <!-- Rating badge -->
+                            <div class="position-absolute top-0 end-0 p-3" style="z-index: 5;">
                                 <span class="badge bg-gold text-dark fs-6"><i class="fas fa-star me-1"></i> <?php echo $b['rating']; ?></span>
                             </div>
+
+                            <!-- Overlaid small coiffeur picture with small salon logo inside it -->
+                            <div class="position-absolute" style="bottom: -30px; left: 20px; z-index: 4;">
+                                <div class="position-relative" style="width: 75px; height: 75px;">
+                                    <img src="<?php echo $b['profile_pic'] ? '/uploads/profiles/'.$b['profile_pic'] : 'https://ui-avatars.com/api/?name='.urlencode($b['full_name']); ?>" class="rounded-circle border border-3 border-gold bg-black" style="width: 75px; height: 75px; object-fit: cover;">
+                                    <?php if($b['salon_logo']): ?>
+                                        <img src="/uploads/salons/<?php echo $b['salon_logo']; ?>" class="position-absolute rounded-circle border border-2 border-gold bg-black" style="width: 28px; height: 28px; bottom: -2px; right: -2px; object-fit: cover; z-index: 5;" title="<?php echo htmlspecialchars($b['salon_name']); ?>">
+                                    <?php else: ?>
+                                        <img src="https://images.unsplash.com/photo-1585747860715-2ba37e788b70?auto=format&fit=crop&w=100&q=80" class="position-absolute rounded-circle border border-2 border-gold bg-black" style="width: 28px; height: 28px; bottom: -2px; right: -2px; object-fit: cover; z-index: 5;" title="<?php echo htmlspecialchars($b['salon_name']); ?>">
+                                    <?php endif; ?>
+                                </div>
+                            </div>
                         </div>
-                        <div class="p-4 flex-grow-1">
+                        <div class="p-4 pt-5 flex-grow-1 d-flex flex-column">
                             <div class="d-flex justify-content-between align-items-start mb-2">
                                 <div>
                                     <h4 class="text-white mb-0"><?php echo $b['full_name']; ?></h4>

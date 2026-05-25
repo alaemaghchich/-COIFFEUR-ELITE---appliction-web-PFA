@@ -63,7 +63,7 @@ class Barber extends User {
     }
 
     public function searchBarbers($filters = []) {
-        $query = "SELECT u.id, u.full_name, u.city, u.profile_pic, bd.salon_name, bd.experience_years, bd.salon_type 
+        $query = "SELECT u.id, u.full_name, u.city, u.profile_pic, bd.salon_name, bd.experience_years, bd.salon_type, bd.salon_logo, bd.salon_img 
                   FROM users u 
                   JOIN barber_details bd ON u.id = bd.user_id 
                   WHERE u.role = 'barber' AND u.status = 'active'";

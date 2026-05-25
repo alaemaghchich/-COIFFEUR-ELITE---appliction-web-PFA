@@ -113,7 +113,14 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <div class="h-100 w-100" style="background: linear-gradient(rgba(0,0,0,0.1), rgba(0,0,0,0.8));"></div>
             </div>
             <div class="position-absolute bottom-0 start-0 p-5 w-100 d-flex align-items-end">
-                <img src="<?php echo $barber['profile_pic'] ? '/uploads/profiles/'.$barber['profile_pic'] : 'https://ui-avatars.com/api/?name='.urlencode($barber['full_name']); ?>" class="rounded-circle border border-4 border-gold me-4" width="120" height="120">
+                <div class="position-relative d-inline-block me-4" style="width: 120px; height: 120px;">
+                    <img src="<?php echo $barber['profile_pic'] ? '/uploads/profiles/'.$barber['profile_pic'] : 'https://ui-avatars.com/api/?name='.urlencode($barber['full_name']); ?>" class="rounded-circle border border-4 border-gold" width="120" height="120" style="object-fit: cover;">
+                    <?php if($barber['salon_logo']): ?>
+                        <img src="/uploads/salons/<?php echo $barber['salon_logo']; ?>" class="position-absolute rounded-circle border border-2 border-gold bg-black" style="width: 40px; height: 40px; bottom: -5px; right: -5px; object-fit: cover; z-index: 2;" title="<?php echo htmlspecialchars($barber['salon_name']); ?>">
+                    <?php else: ?>
+                        <img src="https://images.unsplash.com/photo-1585747860715-2ba37e788b70?auto=format&fit=crop&w=100&q=80" class="position-absolute rounded-circle border border-2 border-gold bg-black" style="width: 40px; height: 40px; bottom: -5px; right: -5px; object-fit: cover; z-index: 2;" title="<?php echo htmlspecialchars($barber['salon_name']); ?>">
+                    <?php endif; ?>
+                </div>
                 <div class="mb-2 flex-grow-1">
                     <h1 class="text-white mb-0"><?php echo $barber['full_name']; ?></h1>
                     <p class="text-gold lead mb-0"><?php echo $barber['salon_name']; ?></p>
