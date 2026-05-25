@@ -119,7 +119,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <p class="text-gold lead mb-0"><?php echo $barber['salon_name']; ?></p>
                 </div>
                 <div class="text-end">
-                    <div class="badge bg-gold text-dark fs-5 mb-2"><i class="fas fa-star me-1"></i> <?php echo $barberObj->searchBarbers(['id' => $barber_id])[0]['rating'] ?? '5.0'; ?></div>
+                    <div class="badge bg-gold text-gold fs-5 mb-2"><i class="fas fa-star me-1"></i> <?php echo $barberObj->searchBarbers(['id' => $barber_id])[0]['rating'] ?? '5.0'; ?></div>
                     <div class="text-gray-text small"><?php echo $barber['city']; ?>, Morocco</div>
                 </div>
             </div>
@@ -148,9 +148,11 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
                     </div>
                 </div>
                 <div class="mt-4">
-                    <a href="https://www.google.com/maps?q=<?php echo $barber['lat']; ?>,<?php echo $barber['lon']; ?>" target="_blank" class="btn btn-outline-gold btn-sm">
-                        <i class="fas fa-map-marker-alt me-2"></i> Open in Google Maps
-                    </a>
+<a href="https://www.google.com/maps?q=<?php echo $barber['lat']; ?>,<?php echo $barber['lon']; ?>" 
+   target="_blank" 
+   class="btn btn-outline-gold btn-sm">
+    <i class="fas fa-map-marker-alt me-2"></i> Open in Google Maps
+</a>
                 </div>
             </div>
 
@@ -244,17 +246,6 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
                             </div>
                         </div>
                         <p class="text-gray-text mb-2 review-comment"><?php echo $r['comment']; ?></p>
-                        
-                        <div class="d-flex align-items-center">
-                            <form action="barber_view.php?id=<?php echo $barber_id; ?>" method="POST" class="like-form">
-                                <input type="hidden" name="review_id" value="<?php echo $r['id']; ?>">
-                                <input type="hidden" name="toggle_like" value="1">
-                                <button type="submit" class="btn btn-link p-0 text-decoration-none <?php echo $r['is_liked'] ? 'text-danger' : 'text-gray-text'; ?>">
-                                    <i class="<?php echo $r['is_liked'] ? 'fas' : 'far'; ?> fa-heart me-1"></i>
-                                    <span class="small"><?php echo $r['likes_count']; ?></span>
-                                </button>
-                            </form>
-                        </div>
                     </div>
                     <?php endforeach; ?>
                 <?php endif; ?>
@@ -496,45 +487,6 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
-
-    // AJAX Like Logic
-    const likeForms = document.querySelectorAll('.like-form');
-    likeForms.forEach(form => {
-        form.addEventListener('submit', function(e) {
-            e.preventDefault();
-            const formData = new FormData(this);
-            formData.append('action', 'toggle_like');
-
-            fetch('ajax_review_action.php', {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.status === 'success') {
-                    const btn = this.querySelector('button');
-                    const icon = btn.querySelector('i');
-                    const count = btn.querySelector('span');
-                    
-                    if (data.is_liked) {
-                        btn.classList.remove('text-gray-text');
-                        btn.classList.add('text-danger');
-                        icon.classList.remove('far');
-                        icon.classList.add('fas');
-                    } else {
-                        btn.classList.remove('text-danger');
-                        btn.classList.add('text-gray-text');
-                        icon.classList.remove('fas');
-                        icon.classList.add('far');
-                    }
-                    count.textContent = data.likes_count;
-                } else if (data.message === 'Not logged in') {
-                    window.location.href = '/auth/login.php';
-                }
-            })
-            .catch(error => console.error('Error:', error));
-        });
-    });
 });
 </script>
 

@@ -20,7 +20,7 @@ $stats = $admin->getStats();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard - BarberHub</title>
+    <title>Admin Dashboard - Coiffeur Elite</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="/assets/css/style.css">
@@ -33,7 +33,7 @@ $stats = $admin->getStats();
     <div class="d-flex">
         <!-- Sidebar -->
         <div class="sidebar admin-sidebar p-4">
-            <h3 class="text-gold mb-5">BARBERHUB</h3>
+            <h3 class="text-gold mb-5">COIFFEUR ELITE</h3>
             <ul class="nav flex-column gap-3">
                 <li class="nav-item">
                     <a href="dashboard.php" class="nav-link active"><i class="fas fa-home me-2"></i> Home</a>

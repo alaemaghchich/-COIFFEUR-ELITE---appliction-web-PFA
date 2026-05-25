@@ -7,17 +7,14 @@ class Review {
         $this->conn = $db;
     }
 
-    public function getByBarber($barber_id, $current_user_id = null) {
-        $query = "SELECT r.*, u.full_name, u.profile_pic,
-                  (SELECT COUNT(*) FROM review_likes WHERE review_id = r.id) as likes_count,
-                  (SELECT COUNT(*) FROM review_likes WHERE review_id = r.id AND user_id = :current_user_id) as is_liked
+    public function getByBarber($barber_id) {
+        $query = "SELECT r.*, u.full_name, u.profile_pic
                   FROM reviews r 
                   JOIN users u ON r.customer_id = u.id 
                   WHERE r.barber_id = :barber_id 
                   ORDER BY r.created_at DESC";
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(":barber_id", $barber_id);
-        $stmt->bindParam(":current_user_id", $current_user_id);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
@@ -39,27 +36,6 @@ class Review {
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(":id", $id);
         $stmt->bindParam(":customer_id", $customer_id);
-        return $stmt->execute();
-    }
-
-    public function toggleLike($review_id, $user_id) {
-        // Check if already liked
-        $query = "SELECT * FROM review_likes WHERE review_id = :review_id AND user_id = :user_id";
-        $stmt = $this->conn->prepare($query);
-        $stmt->bindParam(":review_id", $review_id);
-        $stmt->bindParam(":user_id", $user_id);
-        $stmt->execute();
-
-        if ($stmt->rowCount() > 0) {
-            // Unlike
-            $query = "DELETE FROM review_likes WHERE review_id = :review_id AND user_id = :user_id";
-        } else {
-            // Like
-            $query = "INSERT INTO review_likes (review_id, user_id) VALUES (:review_id, :user_id)";
-        }
-        $stmt = $this->conn->prepare($query);
-        $stmt->bindParam(":review_id", $review_id);
-        $stmt->bindParam(":user_id", $user_id);
         return $stmt->execute();
     }
 

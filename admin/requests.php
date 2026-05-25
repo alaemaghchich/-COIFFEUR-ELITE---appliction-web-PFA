@@ -24,7 +24,7 @@ $requests = $admin->getPendingBarbers();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Barber Requests - BarberHub</title>
+    <title>Barber Requests - Coiffeur Elite</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="/assets/css/style.css">
@@ -33,7 +33,7 @@ $requests = $admin->getPendingBarbers();
     <div class="d-flex">
         <!-- Sidebar -->
         <div class="sidebar admin-sidebar p-4" style="min-width: 250px;">
-            <h3 class="text-gold mb-5">BARBERHUB</h3>
+            <h3 class="text-gold mb-5">COIFFEUR ELITE</h3>
             <ul class="nav flex-column gap-3">
                 <li class="nav-item"><a href="dashboard.php" class="nav-link"><i class="fas fa-home me-2"></i> Home</a></li>
                 <li class="nav-item"><a href="users.php" class="nav-link"><i class="fas fa-users me-2"></i> Users</a></li>

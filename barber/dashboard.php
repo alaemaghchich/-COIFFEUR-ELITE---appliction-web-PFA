@@ -39,7 +39,7 @@ $services = $service->getByBarber($barber_id);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Barber Dashboard - BarberHub</title>
+    <title>Barber Dashboard - Coiffeur Elite</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="/assets/css/style.css">
@@ -47,7 +47,7 @@ $services = $service->getByBarber($barber_id);
 <body class="bg-darker">
     <nav class="navbar navbar-expand-lg navbar-luxury">
         <div class="container">
-            <a class="navbar-brand text-gold fw-bold" href="#">BARBERHUB DASHBOARD</a>
+            <a class="navbar-brand text-gold fw-bold" href="#">COIFFEUR ELITE DASHBOARD</a>
             <div class="dropdown ms-auto">
                 <a class="nav-link dropdown-toggle text-gold" href="#" data-bs-toggle="dropdown">
                     <img src="<?php echo $details['profile_pic'] ? '/uploads/profiles/'.$details['profile_pic'] : 'https://ui-avatars.com/api/?name='.urlencode($details['full_name']); ?>" class="rounded-circle me-2" width="30" height="30">

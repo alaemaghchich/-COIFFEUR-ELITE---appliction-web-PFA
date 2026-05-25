@@ -1,5 +1,5 @@
-CREATE DATABASE IF NOT EXISTS barberhub;
-USE barberhub;
+CREATE DATABASE IF NOT EXISTS coiffeurelite;
+USE coiffeurelite;
 
 -- Table for all users (Admin, Barber, Customer)
 CREATE TABLE IF NOT EXISTS users (
@@ -79,19 +79,9 @@ CREATE TABLE IF NOT EXISTS reviews (
     rating INT CHECK (rating >= 1 AND rating <= 5),
     comment TEXT,
     image VARCHAR(255),
-    likes INT DEFAULT 0,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (customer_id) REFERENCES users(id) ON DELETE CASCADE,
     FOREIGN KEY (barber_id) REFERENCES users(id) ON DELETE CASCADE
-);
-
--- Table for Review Likes
-CREATE TABLE IF NOT EXISTS review_likes (
-    review_id INT NOT NULL,
-    user_id INT NOT NULL,
-    PRIMARY KEY (review_id, user_id),
-    FOREIGN KEY (review_id) REFERENCES reviews(id) ON DELETE CASCADE,
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
 -- Table for Blacklisted Emails
@@ -102,6 +92,3 @@ CREATE TABLE IF NOT EXISTS blacklist (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Insert Default Admin (plain-text password)
-INSERT INTO users (full_name, email, phone, password, role, gender, city, status) 
-VALUES ('Main Admin', 'admin@barberhub.com', '0600000000', 'Admin_00393690', 'admin', 'male', 'Casablanca', 'active');

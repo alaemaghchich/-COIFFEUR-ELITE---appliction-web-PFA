@@ -88,7 +88,7 @@ $cities = ["Casablanca", "Rabat", "Marrakech", "Fes", "Tangier", "Agadir", "Mekn
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register - BarberHub</title>
+    <title>Register - Coiffeur Elite</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/assets/css/style.css">
     <style>
@@ -102,7 +102,7 @@ $cities = ["Casablanca", "Rabat", "Marrakech", "Fes", "Tangier", "Agadir", "Mekn
             <div class="col-md-8">
                 <div class="card-luxury p-5 shadow-lg">
                     <div class="text-center mb-5">
-                        <h2 class="text-gold fw-bold">JOIN BARBERHUB</h2>
+                        <h2 class="text-gold fw-bold">JOIN COIFFEUR ELITE</h2>
                         <p class="text-gray-text">Become part of the elite grooming community.</p>
                     </div>
 

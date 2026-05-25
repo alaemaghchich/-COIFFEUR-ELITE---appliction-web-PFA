@@ -40,7 +40,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - BarberHub</title>
+    <title>Login - Coiffeur Elite</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/assets/css/style.css">
 </head>
@@ -50,7 +50,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
             <div class="col-md-5">
                 <div class="card-luxury p-5 shadow-lg">
                     <div class="text-center mb-5">
-                        <h2 class="text-gold fw-bold">BARBERHUB</h2>
+                        <h2 class="text-gold fw-bold">COIFFEUR ELITE</h2>
                         <p class="text-gray-text">Welcome back, Gentleman.</p>
                     </div>
 

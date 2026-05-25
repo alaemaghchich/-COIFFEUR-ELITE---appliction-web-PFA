@@ -2,7 +2,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-4 mb-4">
-                    <h5 class="text-gold mb-3">BARBERHUB</h5>
+                    <h5 class="text-gold mb-3">COIFFEUR ELITE</h5>
                     <p class="text-gray-text small">Experience the pinnacle of grooming. Our platform connects you with the finest barbers in Morocco for a truly luxury experience.</p>
                 </div>
                 <div class="col-md-2 mb-4">
@@ -31,7 +31,7 @@
                 </div>
             </div>
             <div class="text-center pt-4 border-top border-secondary">
-                <p class="text-gray-text small mb-0">&copy; 2026 BarberHub. All rights reserved.</p>
+                <p class="text-gray-text small mb-0">&copy; 2026 Coiffeur Elite. All rights reserved.</p>
             </div>
         </div>
     </footer>

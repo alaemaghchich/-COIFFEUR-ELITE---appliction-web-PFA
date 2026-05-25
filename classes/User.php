@@ -30,7 +30,7 @@ class User {
 
         if($stmt->rowCount() > 0) {
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
-            if($password === $row['password']) {
+            if(password_verify($password, $row['password'])) {
                 if($row['status'] == 'rejected') return "Your account has been rejected.";
                 if($row['status'] == 'pending') return "Your account is pending approval.";
                 
@@ -63,6 +63,8 @@ class User {
         if($this->isEmailBlacklisted($this->email)) {
             return "Email is blacklisted.";
         }
+
+        $this->password = password_hash($this->password, PASSWORD_DEFAULT);
 
         $query = "INSERT INTO " . $this->table_name . " 
                   SET full_name=:full_name, email=:email, phone=:phone, password=:password, 

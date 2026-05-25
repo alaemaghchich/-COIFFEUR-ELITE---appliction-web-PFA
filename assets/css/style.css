@@ -1,4 +1,4 @@
-/* BarberHub Luxury Theme */
+/* Coiffeur Elite Luxury Theme */
 
 :root {
     --gold: #D4AF37;
@@ -97,9 +97,98 @@ h1, h2, h3, h4, h5, h6 {
     color: var(--gold) !important;
 }
 
+/* Fade Gallery Core */
+.fade-container {
+    width: 100%;
+    max-width: 400px;
+    position: relative;
+    border-radius: 10px;
+    border: var(--luxury-border);
+    overflow: hidden;
+    margin: 0 auto;
+}
+
+.fade-container.ratio-16-9 {
+    aspect-ratio: 16 / 9;
+}
+
+.fade-container.ratio-9-16 {
+    aspect-ratio: 9 / 16;
+}
+
+.fade-container img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity 1.5s ease-in-out;
+}
+
+.fade-container img.active {
+    opacity: 1;
+}
+
+/* Hero Fade Gallery */
+.hero-fade-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: 1;
+}
+
+.hero-fade-container img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity 2s ease-in-out; /* Slightly longer for hero luxury feel */
+}
+
+.hero-fade-container img.active {
+    opacity: 1;
+}
+
+.hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6));
+    z-index: 2;
+}
+
 /* Dashboard Sidebar */
 .sidebar {
     background-color: var(--darker-bg);
     border-right: var(--luxury-border);
     min-height: 100vh;
+}
+.btn-outline-gold {
+    color: #fff;
+    border: 1px solid #fff;
+    background: transparent;
+}
+
+.btn-outline-gold i {
+    color: #fff;
+}
+
+.btn-outline-gold:hover {
+    background: #d4af37;
+    border-color: #d4af37;
+    color: #000;
+}
+
+.btn-outline-gold:hover i {
+    color: #000;
 }

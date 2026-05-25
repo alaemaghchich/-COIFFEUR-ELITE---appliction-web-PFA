@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BarberHub - Luxury Grooming Experience</title>
+    <title>Coiffeur Elite - Luxury Grooming Experience</title>
     <!-- Bootstrap 5 -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Google Fonts -->
@@ -17,7 +17,7 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-luxury sticky-top" style="z-index : 9999">
         <div class="container">
-            <a class="navbar-brand text-gold fw-bold" href="/">BARBERHUB</a>
+            <a class="navbar-brand text-gold fw-bold" href="/">COIFFEUR ELITE</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>

@@ -1,6 +1,6 @@
-# BarberHub - Luxury Grooming Platform
+# Coiffeur Elite - Luxury Grooming Platform
 
-BarberHub is a premium booking platform designed for elite barber salons in Morocco. It connects high-end barbers with customers looking for a luxury grooming experience.
+Coiffeur Elite is a premium booking platform designed for elite barber salons in Morocco. It connects high-end barbers with customers looking for a luxury grooming experience.
 
 ## 🚀 Features
 
