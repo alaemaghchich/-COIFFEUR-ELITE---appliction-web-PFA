@@ -93,6 +93,16 @@ class Booking {
         return $stmt->execute();
     }
 
+    public function cancelByCustomer($booking_id, $customer_id) {
+        // Can only cancel if status is 'pending' or 'accepted'
+        $query = "UPDATE bookings SET status = 'cancelled' 
+                  WHERE id = :id AND customer_id = :customer_id AND status IN ('pending', 'accepted')";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(":id", $booking_id);
+        $stmt->bindParam(":customer_id", $customer_id);
+        return $stmt->execute();
+    }
+
     public function getCustomerBookings($customer_id) {
         $query = "SELECT b.*, u.full_name as barber_name, u.phone as barber_phone, u.profile_pic as barber_pic, u.city,
                   bd.salon_name 

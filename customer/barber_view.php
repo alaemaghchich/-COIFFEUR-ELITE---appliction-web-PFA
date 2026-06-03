@@ -137,7 +137,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
         <!-- Details & Services -->
         <div class="col-lg-8">
             <div class="card-luxury p-4 mb-5">
-                <h4 class="text-gold mb-3">About the Barber</h4>
+                <h4 class="text-gold mb-3">About the Coiffeur</h4>
                 <p class="text-gray-text"><?php echo $barber['bio']; ?></p>
                 <hr class="border-secondary my-4">
                 <div class="row">
@@ -300,14 +300,21 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <form action="barber_view.php?id=<?php echo $barber_id; ?>" method="POST" id="bookingForm">
                     <div class="mb-4">
                         <label class="form-label text-gray-text">Select Services</label>
-                        <div class="service-list">
+                        <div class="service-selection-container">
                             <?php foreach($services as $s): ?>
-                            <div class="form-check mb-2">
+                            <label class="service-item-custom" for="s<?php echo $s['id']; ?>">
                                 <input class="form-check-input service-check" type="checkbox" name="services[]" value="<?php echo $s['id']; ?>" data-price="<?php echo $s['price']; ?>" data-duration="<?php echo $s['duration']; ?>" id="s<?php echo $s['id']; ?>">
-                                <label class="form-check-label text-light" for="s<?php echo $s['id']; ?>">
-                                    <?php echo $s['name']; ?> <span class="text-gray-text small">(<?php echo $s['price']; ?> MAD)</span>
-                                </label>
-                            </div>
+                                <div class="service-card">
+                                    <div class="service-info">
+                                        <span class="service-name"><?php echo $s['name']; ?></span>
+                                        <span class="service-details"><?php echo $s['duration']; ?> min</span>
+                                    </div>
+                                    <div class="d-flex align-items-center">
+                                        <span class="service-price"><?php echo $s['price']; ?> MAD</span>
+                                        <div class="service-check-icon"></div>
+                                    </div>
+                                </div>
+                            </label>
                             <?php endforeach; ?>
                         </div>
                     </div>
@@ -320,7 +327,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <div class="mb-4">
                         <label class="form-label text-gray-text">Select Time</label>
                         <select name="booking_time" id="bookingTime" class="form-select" required disabled>
-                            <option value="">Select date & services first</option>
+                            <option value="">Select a date first</option>
                         </select>
                     </div>
 
@@ -353,6 +360,9 @@ document.addEventListener('DOMContentLoaded', function() {
     const bookingTime = document.getElementById('bookingTime');
     const barberId = <?php echo $barber_id; ?>;
 
+    let lastDate = '';
+    let lastDuration = 0;
+
     function updateTotals() {
         let totalDuration = 0;
         let totalPrice = 0;
@@ -369,21 +379,34 @@ document.addEventListener('DOMContentLoaded', function() {
         durationSpan.textContent = totalDuration + ' min';
         durationSpan.dataset.value = totalDuration;
         priceSpan.textContent = totalPrice + ' MAD';
-        bookBtn.disabled = selectedCount === 0 || !bookingDate.value || !bookingTime.value;
         
-        if(selectedCount > 0 && bookingDate.value) {
-            fetchAvailableTimes();
+        const date = bookingDate.value;
+        const duration = totalDuration > 0 ? totalDuration : 15;
+
+        if(date) {
+            if(date !== lastDate || duration !== lastDuration) {
+                fetchAvailableTimes(date, duration);
+            }
         } else {
             bookingTime.disabled = true;
-            bookingTime.innerHTML = '<option value="">Select date & services first</option>';
+            bookingTime.innerHTML = '<option value="">Select a date first</option>';
+            lastDate = '';
+            lastDuration = 0;
         }
+
+        updateButtonState(selectedCount);
     }
 
-    function fetchAvailableTimes() {
-        const date = bookingDate.value;
-        const duration = durationSpan.dataset.value;
+    function updateButtonState(selectedCount) {
+        if (selectedCount === undefined) {
+            selectedCount = Array.from(checks).filter(c => c.checked).length;
+        }
+        bookBtn.disabled = selectedCount === 0 || !bookingDate.value || !bookingTime.value;
+    }
 
-        if(!date || duration == 0) return;
+    function fetchAvailableTimes(date, duration) {
+        lastDate = date;
+        lastDuration = duration;
 
         bookingTime.disabled = true;
         bookingTime.innerHTML = '<option value="">Loading times...</option>';
@@ -405,10 +428,12 @@ document.addEventListener('DOMContentLoaded', function() {
                         bookingTime.disabled = false;
                     }
                 }
+                updateButtonState();
             })
             .catch(error => {
                 console.error('Error:', error);
                 bookingTime.innerHTML = '<option value="">Error loading times</option>';
+                updateButtonState();
             });
     }
 
@@ -417,9 +442,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     bookingDate.addEventListener('change', updateTotals);
-    bookingTime.addEventListener('change', function() {
-        bookBtn.disabled = !this.value;
-    });
+    bookingTime.addEventListener('change', () => updateButtonState());
 
     // Star Rating interaction
     const stars = document.querySelectorAll('.star-btn');

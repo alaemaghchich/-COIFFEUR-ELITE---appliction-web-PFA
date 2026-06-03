@@ -9,9 +9,9 @@
     </div>
     <div class="hero-overlay"></div>
     
-    <div class="hero-content position-relative z-index-2 px-3" style="z-index: 9999;">
+    <div class="hero-content position-relative z-index-2 px-3" style="z-index: 999;">
         <h1 class="display-1 fw-bold mb-4 animate__animated animate__fadeInDown">COIFFEUR ELITE</h1>
-        <p class="lead text-light mb-5 fs-4 animate__animated animate__fadeInUp">PRECISION. LUXURY. STYLE.</p>
+        <p class="lead text-light mb-5 fs-4 animate__animated animate__fadeInUp">PRECISION. LUXURY. STYLE</p>
         <div class="d-flex flex-column flex-md-row gap-3 justify-content-center">
             <a href="#explore" class="btn btn-gold btn-lg px-5 py-3">Explore Coiffeur Elite</a>
             <a href="/customer/search.php" class="btn btn-outline-light btn-lg px-5 py-3">Book Appointment</a>
@@ -110,7 +110,7 @@
                 <div class="position-relative">
                     <div class="card-luxury p-4 shadow" style="transform: rotate(-3deg); background-color: #0A0A0A; border: 1px solid rgba(212, 175, 55, 0.5);">
                         <div class="d-flex align-items-center mb-3">
-                            <img src="https://ui-avatars.com/api/?name=Alex+G&background=C5A059&color=fff" class="rounded-circle me-3" width="50">
+                            <img src="img/user.png" class="rounded-circle me-3" width="50">
                             <div>
                                 <h6 class="mb-0 text-white">brahim medkour</h6>
                                 <div class="text-gold small">

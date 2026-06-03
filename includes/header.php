@@ -17,7 +17,7 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-luxury sticky-top" style="z-index : 9999">
         <div class="container">
-            <a class="navbar-brand text-gold fw-bold" href="/">COIFFEUR ELITE</a>
+            <a class="navbar-brand text-gold fw-bold" href="/"> <i class="fas fa-cut fa-1x text-gold mr-4"></i>COIFFEUR ELITE</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>

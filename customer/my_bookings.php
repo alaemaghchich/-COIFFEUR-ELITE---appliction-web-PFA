@@ -12,6 +12,17 @@ $database = new Database();
 $db = $database->getConnection();
 $bookingObj = new Booking($db);
 
+$success = "";
+$error = "";
+
+if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['cancel_booking'])) {
+    if($bookingObj->cancelByCustomer($_POST['booking_id'], $_SESSION['user_id'])) {
+        $success = "Appointment cancelled successfully.";
+    } else {
+        $error = "Failed to cancel appointment. It might already be completed or rejected.";
+    }
+}
+
 $bookings = $bookingObj->getCustomerBookings($_SESSION['user_id']);
 
 function getStatusBadge($status) {
@@ -20,12 +31,20 @@ function getStatusBadge($status) {
         case 'accepted': return 'bg-success';
         case 'rejected': return 'bg-danger';
         case 'completed': return 'bg-info';
+        case 'cancelled': return 'bg-secondary';
         default: return 'bg-secondary';
     }
 }
 ?>
 
 <div class="container py-5">
+    <?php if($success): ?>
+        <div class="alert alert-success"><?php echo $success; ?></div>
+    <?php endif; ?>
+    <?php if($error): ?>
+        <div class="alert alert-danger"><?php echo $error; ?></div>
+    <?php endif; ?>
+
     <div class="d-flex justify-content-between align-items-center mb-5">
         <h2 class="text-gold mb-0">My Appointments</h2>
         <a href="search.php" class="btn btn-outline-gold btn-sm">
@@ -70,7 +89,15 @@ function getStatusBadge($status) {
                             </div>
                             <h5 class="text-gold mb-0"><?php echo $b['total_price']; ?> MAD</h5>
                             <small class="text-gray-text d-block mt-1 mb-2"><?php echo implode(', ', $b['services']); ?></small>
-                            <a href="booking_details.php?id=<?php echo $b['id']; ?>" class="btn btn-outline-gold btn-sm px-3">View Details</a>
+                            <div class="d-flex gap-2 justify-content-md-end">
+                                <a href="booking_details.php?id=<?php echo $b['id']; ?>" class="btn btn-outline-gold btn-sm px-3">View Details</a>
+                                <?php if(in_array($b['status'], ['pending', 'accepted'])): ?>
+                                <form action="my_bookings.php" method="POST" onsubmit="return confirm('Are you sure you want to cancel this appointment?')">
+                                    <input type="hidden" name="booking_id" value="<?php echo $b['id']; ?>">
+                                    <button type="submit" name="cancel_booking" class="btn btn-outline-danger btn-sm px-3">Cancel</button>
+                                </form>
+                                <?php endif; ?>
+                            </div>
                         </div>
                     </div>
                 </div>

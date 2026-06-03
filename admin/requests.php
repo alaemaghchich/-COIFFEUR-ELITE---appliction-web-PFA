@@ -35,11 +35,13 @@ $requests = $admin->getPendingBarbers();
         <div class="sidebar admin-sidebar p-4" style="min-width: 250px;">
             <h3 class="text-gold mb-5">COIFFEUR ELITE</h3>
             <ul class="nav flex-column gap-3">
-                <li class="nav-item"><a href="dashboard.php" class="nav-link"><i class="fas fa-home me-2"></i> Home</a></li>
+                <li class="nav-item"><a href="dashboard.php" class="nav-link"><i class="fas fa-chart-line me-2"></i> Dashboard</a></li>
                 <li class="nav-item"><a href="users.php" class="nav-link"><i class="fas fa-users me-2"></i> Users</a></li>
                 <li class="nav-item"><a href="requests.php" class="nav-link active"><i class="fas fa-user-clock me-2"></i> Barber Requests</a></li>
+                <li class="nav-item"><a href="support.php" class="nav-link"><i class="fas fa-headset me-2"></i> Support</a></li>
                 <li class="nav-item"><a href="blacklist.php" class="nav-link"><i class="fas fa-user-slash me-2"></i> Blacklist</a></li>
-                <li class="nav-item mt-5"><a href="/auth/logout.php" class="nav-link text-danger"><i class="fas fa-sign-out-alt me-2"></i> Logout</a></li>
+                <li class="nav-item mt-4"><a href="/index.php" class="nav-link text-gold"><i class="fas fa-home me-2"></i> Main Site</a></li>
+                <li class="nav-item mt-2"><a href="/auth/logout.php" class="nav-link text-danger"><i class="fas fa-sign-out-alt me-2"></i> Logout</a></li>
             </ul>
         </div>
 

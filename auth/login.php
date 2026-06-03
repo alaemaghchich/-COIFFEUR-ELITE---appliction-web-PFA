@@ -50,6 +50,9 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
             <div class="col-md-5">
                 <div class="card-luxury p-5 shadow-lg">
                     <div class="text-center mb-5">
+                        <a href="/index.php" class="btn btn-outline-gold btn-sm mb-4">
+                            <i class="fas fa-home me-2"></i> Return to Home
+                        </a>
                         <h2 class="text-gold fw-bold">COIFFEUR ELITE</h2>
                         <p class="text-gray-text">Welcome back, Gentleman.</p>
                     </div>

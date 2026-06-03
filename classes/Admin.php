@@ -65,6 +65,13 @@ class Admin extends User {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public function removeFromBlacklist($id) {
+        $query = "DELETE FROM blacklist WHERE id = :id";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(":id", $id);
+        return $stmt->execute();
+    }
+
     public function getStats() {
         $stats = [];
         

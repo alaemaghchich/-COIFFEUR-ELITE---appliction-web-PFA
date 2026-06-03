@@ -19,6 +19,11 @@ class User {
     }
 
     public function login($identifier, $password) {
+        // Check if blacklisted first
+        if($this->isBlacklisted($identifier, $identifier)) {
+            return "This account or phone number is blacklisted.";
+        }
+
         $query = "SELECT * FROM " . $this->table_name . " 
                   WHERE email = :email OR phone = :phone OR full_name = :name LIMIT 1";
 
@@ -51,17 +56,18 @@ class User {
         return false;
     }
 
-    public function isEmailBlacklisted($email) {
-        $query = "SELECT id FROM blacklist WHERE email = :email";
+    public function isBlacklisted($email, $phone) {
+        $query = "SELECT id FROM blacklist WHERE (email = :email AND email IS NOT NULL) OR phone = :phone";
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(":email", $email);
+        $stmt->bindParam(":phone", $phone);
         $stmt->execute();
         return $stmt->rowCount() > 0;
     }
 
     public function register() {
-        if($this->isEmailBlacklisted($this->email)) {
-            return "Email is blacklisted.";
+        if($this->isBlacklisted($this->email, $this->phone)) {
+            return "Your email or phone number is blacklisted.";
         }
 
         $this->password = password_hash($this->password, PASSWORD_DEFAULT);

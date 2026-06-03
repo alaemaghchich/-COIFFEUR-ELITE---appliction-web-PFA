@@ -39,16 +39,15 @@ class Review {
         return $stmt->execute();
     }
 
-    public function create($customer_id, $barber_id, $rating, $comment, $image = null) {
+    public function create($customer_id, $barber_id, $rating, $comment) {
         $query = "INSERT INTO " . $this->table_name . " 
                   SET customer_id=:customer_id, barber_id=:barber_id, rating=:rating, 
-                      comment=:comment, image=:image";
+                      comment=:comment";
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(":customer_id", $customer_id);
         $stmt->bindParam(":barber_id", $barber_id);
         $stmt->bindParam(":rating", $rating);
         $stmt->bindParam(":comment", $comment);
-        $stmt->bindParam(":image", $image);
         return $stmt->execute();
     }
 }

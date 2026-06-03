@@ -102,6 +102,9 @@ $cities = ["Casablanca", "Rabat", "Marrakech", "Fes", "Tangier", "Agadir", "Mekn
             <div class="col-md-8">
                 <div class="card-luxury p-5 shadow-lg">
                     <div class="text-center mb-5">
+                        <a href="/index.php" class="btn btn-outline-gold btn-sm mb-4">
+                            <i class="fas fa-home me-2"></i> Return to Home
+                        </a>
                         <h2 class="text-gold fw-bold">JOIN COIFFEUR ELITE</h2>
                         <p class="text-gray-text">Become part of the elite grooming community.</p>
                     </div>

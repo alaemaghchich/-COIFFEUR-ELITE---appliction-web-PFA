@@ -66,7 +66,7 @@ $cities = ["Casablanca", "Rabat", "Marrakech", "Fes", "Tangier", "Agadir", "Mekn
                             
                             <!-- Rating badge -->
                             <div class="position-absolute top-0 end-0 p-3" style="z-index: 5;">
-                                <span class="badge bg-gold text-dark fs-6"><i class="fas fa-star me-1"></i> <?php echo $b['rating']; ?></span>
+                                <span class="badge bg-gold text-gold fs-6"><i class="fas fa-star me-1"></i> <?php echo $b['rating']; ?></span>
                             </div>
 
                             <!-- Overlaid small coiffeur picture with small salon logo inside it -->

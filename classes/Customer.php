@@ -20,17 +20,18 @@ class Customer extends User {
     public function banIfNecessary($customer_id) {
         $count = $this->getNoShowCount($customer_id);
         if($count >= 5) {
-            // Get email first
-            $q = "SELECT email FROM users WHERE id = :id";
+            // Get user info
+            $q = "SELECT email, phone FROM users WHERE id = :id";
             $s = $this->conn->prepare($q);
             $s->bindParam(":id", $customer_id);
             $s->execute();
             $user = $s->fetch(PDO::FETCH_ASSOC);
 
             // Add to blacklist
-            $bq = "INSERT IGNORE INTO blacklist (email, reason) VALUES (:email, '5 no-shows')";
+            $bq = "INSERT IGNORE INTO blacklist (email, phone, reason) VALUES (:email, :phone, '5 no-shows')";
             $bs = $this->conn->prepare($bq);
             $bs->bindParam(":email", $user['email']);
+            $bs->bindParam(":phone", $user['phone']);
             $bs->execute();
 
             // Delete account

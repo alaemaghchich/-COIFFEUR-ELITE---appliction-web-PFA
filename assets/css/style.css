@@ -192,3 +192,95 @@ h1, h2, h3, h4, h5, h6 {
 .btn-outline-gold:hover i {
     color: #000;
 }
+
+/* Custom Service Selection */
+.service-selection-container {
+    display: grid;
+    gap: 12px;
+}
+
+.service-item-custom {
+    position: relative;
+    cursor: pointer;
+    display: block;
+    margin-bottom: 0;
+}
+
+.service-item-custom input[type="checkbox"] {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+.service-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 18px;
+    background-color: #111;
+    border: 1px solid #222;
+    border-radius: 12px;
+}
+
+.service-item-custom:hover .service-card {
+    border-color: rgba(212, 175, 55, 0.4);
+    background-color: #181818;
+}
+
+.service-item-custom input[type="checkbox"]:checked + .service-card {
+    border-color: var(--gold);
+    background-color: rgba(212, 175, 55, 0.08);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.service-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.service-name {
+    color: var(--light-text);
+    font-weight: 600;
+    font-size: 1.05rem;
+    margin-bottom: 2px;
+}
+
+.service-details {
+    font-size: 0.8rem;
+    color: var(--gray-text);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.service-price {
+    color: var(--gold);
+    font-weight: 700;
+    font-size: 1.1rem;
+}
+
+.service-check-icon {
+    width: 24px;
+    height: 24px;
+    border: 2px solid #333;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 15px;
+    background: transparent;
+}
+
+.service-item-custom input[type="checkbox"]:checked + .service-card .service-check-icon {
+    background-color: var(--gold);
+    border-color: var(--gold);
+    box-shadow: 0 0 10px rgba(212, 175, 55, 0.4);
+}
+
+.service-item-custom input[type="checkbox"]:checked + .service-card .service-check-icon::after {
+    content: '✓';
+    color: #000;
+    font-size: 14px;
+    font-weight: 900;
+}
