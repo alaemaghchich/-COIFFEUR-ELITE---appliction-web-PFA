@@ -57,10 +57,9 @@ class User {
     }
 
     public function isBlacklisted($email, $phone) {
-        $query = "SELECT id FROM blacklist WHERE (email = :email AND email IS NOT NULL) OR phone = :phone";
+        $query = "SELECT id FROM blacklist WHERE email = :email";
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(":email", $email);
-        $stmt->bindParam(":phone", $phone);
         $stmt->execute();
         return $stmt->rowCount() > 0;
     }

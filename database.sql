@@ -84,6 +84,17 @@ CREATE TABLE IF NOT EXISTS reviews (
     FOREIGN KEY (barber_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
+-- Table for Support Requests
+CREATE TABLE IF NOT EXISTS support_requests (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    email VARCHAR(100) NOT NULL,
+    type ENUM('complaint', 'support', 'other') NOT NULL,
+    message TEXT NOT NULL,
+    status ENUM('pending', 'resolved') DEFAULT 'pending',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
 -- Table for Blacklisted Emails
 CREATE TABLE IF NOT EXISTS blacklist (
     id INT AUTO_INCREMENT PRIMARY KEY,

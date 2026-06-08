@@ -13,8 +13,8 @@
         <h1 class="display-1 fw-bold mb-4 animate__animated animate__fadeInDown">COIFFEUR ELITE</h1>
         <p class="lead text-light mb-5 fs-4 animate__animated animate__fadeInUp">PRECISION. LUXURY. STYLE</p>
         <div class="d-flex flex-column flex-md-row gap-3 justify-content-center">
-            <a href="#explore" class="btn btn-gold btn-lg px-5 py-3">Explore Coiffeur Elite</a>
-            <a href="/customer/search.php" class="btn btn-outline-light btn-lg px-5 py-3">Book Appointment</a>
+            <a href="#explore" class="btn btn-gold btn-lg px-5 py-3">Discover COIFFEUR ELITE</a>
+            <a href="/customer/search.php" class="btn btn-outline-light btn-lg px-5 py-3">Book an Appointment</a>
         </div>
     </div>
 </section>
@@ -24,9 +24,9 @@
     <div class="container py-5">
         <div class="row align-items-center">
             <div class="col-lg-6 mb-4 mb-lg-0">
-                <h2 class="mb-4">The New Standard of Grooming</h2>
-                <p class="text-gray-text lead">Coiffeur Elite is more than just a booking platform. It's an exclusive gateway to the most elite barbers and stylists in the country.</p>
-                <p class="text-gray-text">We handpick our partners to ensure that every visit is a masterpiece of precision and luxury. From classic straight-razor shaves to modern precision cuts, experience the best.</p>
+                <h2 class="mb-4">A New Standard in Hair Care</h2>
+                <p class="text-gray-text lead">COIFFEUR ELITE is more than a booking site. It helps you find top barbers in the country.</p>
+                <p class="text-gray-text">We choose our partners with care so each visit is high quality. From classic shaves to modern cuts, get the best service.</p>
             </div>
             <div class="col-lg-6">
                 <div class="row g-3">
@@ -58,27 +58,27 @@
 <script src="/assets/js/scroll.js"></script>
 <section class="py-5">
     <div class="container py-5 text-center">
-        <h2 class="mb-5">Our Elite Services</h2>
+        <h2 class="mb-5">Our Top Services</h2>
         <div class="row g-4">
             <div class="col-md-4">
                 <div class="card-luxury p-4 h-100">
                     <i class="fas fa-cut fa-3x text-gold mb-4"></i>
-                    <h3>Hair Styling</h3>
-                    <p class="text-gray-text">Precision cuts tailored to your face shape and personal style.</p>
+                    <h3>Haircut</h3>
+                    <p class="text-gray-text">Precise cuts made for your face and style.</p>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="card-luxury p-4 h-100">
                     <i class="fas fa-magic fa-3x text-gold mb-4"></i>
-                    <h3>Beard Grooming</h3>
-                    <p class="text-gray-text">Expert trimming and shaping with premium oils and balms.</p>
+                    <h3>Beard Care</h3>
+                    <p class="text-gray-text">Expert trimming with quality oils and balms.</p>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="card-luxury p-4 h-100">
                     <i class="fas fa-spa fa-3x text-gold mb-4"></i>
-                    <h3>Luxury Facials</h3>
-                    <p class="text-gray-text">Rejuvenating skin treatments for the modern gentleman.</p>
+                    <h3>Face Care</h3>
+                    <p class="text-gray-text">Refreshing skin treatments for men.</p>
                 </div>
             </div>
         </div>
@@ -90,12 +90,12 @@
     <div class="container py-5">
         <div class="row align-items-center text-center text-md-start">
             <div class="col-md-7">
-                <h2 class="display-5 fw-bold mb-4 text-gold">Join Our Grooming Community</h2>
-                <p class="lead text-light mb-4" style="opacity: 0.9;">Share your experience, rate your favorite barbers, and discover the best stylists through real reviews. Our community helps you find the perfect cut with confidence.</p>
+                <h2 class="display-5 fw-bold mb-4 text-gold">Join Our Community</h2>
+                <p class="lead text-light mb-4" style="opacity: 0.9;">Share your visit, rate barbers, and read real reviews. Our community helps you choose the right barber.</p>
                 <div class="d-flex flex-wrap gap-4 mb-5 justify-content-center justify-content-md-start">
                     <div class="d-flex align-items-center">
                         <i class="fas fa-comment-dots text-gold fa-2x me-3"></i>
-                        <span class="text-white fs-5 fw-bold">Share Feedback</span>
+                        <span class="text-white fs-5 fw-bold">Share Review</span>
                     </div>
                     <div class="d-flex align-items-center">
                         <i class="fas fa-star text-warning fa-2x me-3"></i>
@@ -103,7 +103,7 @@
                     </div>
                 </div>
                 <a href="/customer/search.php" class="btn btn-gold btn-lg px-5 py-3 shadow-lg fw-bold">
-                    EXPLORE NOW <i class="fas fa-arrow-right ms-2"></i>
+                    DISCOVER NOW <i class="fas fa-arrow-right ms-2"></i>
                 </a>
             </div>
             <div class="col-md-5 mt-5 mt-md-0">
