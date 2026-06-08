@@ -32,9 +32,7 @@ include_once 'includes/header.php';
                 </div>
             </div>
 
-            <div class="text-center mt-4">
-                <p class="text-gray-text small">Last update: <?php echo date('Y/m/d'); ?></p>
-            </div>
+
         </div>
     </div>
 </div>
