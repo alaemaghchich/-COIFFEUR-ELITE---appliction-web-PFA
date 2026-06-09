@@ -37,7 +37,6 @@
                                     <li><a class="dropdown-item" href="/barber/dashboard.php">Dashboard</a></li>
                                 <?php else: ?>
                                     <li><a class="dropdown-item" href="/customer/my_bookings.php"><i class="fas fa-calendar-alt me-2"></i> My Appointments</a></li>
-                                    <li><a class="dropdown-item" href="/customer/profile.php">My Profile</a></li>
                                 <?php endif; ?>
                                 <li><hr class="dropdown-divider"></li>
                                 <li><a class="dropdown-item text-danger" href="/auth/logout.php">Logout</a></li>

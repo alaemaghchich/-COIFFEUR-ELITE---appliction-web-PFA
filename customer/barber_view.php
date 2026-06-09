@@ -142,8 +142,8 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
     </div>
 
     <div class="row g-4 g-lg-5">
-        <!-- Main Content (About, Services, Reviews) -->
-        <div class="col-lg-8">
+        <!-- Main Content (About, Services) -->
+        <div class="col-lg-8 order-1">
             <!-- About -->
             <div class="card-luxury p-4 mb-4">
                 <h4 class="text-gold mb-3 h5">Professional Profile</h4>
@@ -187,7 +187,67 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
                 </div>
                 <?php endforeach; ?>
             </div>
+        </div>
 
+        <!-- Sidebar (Booking) -->
+        <div class="col-lg-4 order-2">
+            <div class="sticky-top" style="top: 100px;">
+                <div class="card-luxury p-4 shadow-lg border-gold">
+                    <h4 class="text-gold mb-4 h5 text-uppercase tracking-wide">Instant Reservation</h4>
+                    <form action="barber_view.php?id=<?php echo $barber_id; ?>" method="POST" id="bookingForm">
+                        <div class="mb-4">
+                            <label class="form-label text-gray-text small text-uppercase">Choose Services</label>
+                            <div class="service-selection-container" style="max-height: 300px; overflow-y: auto;">
+                                <?php foreach($services as $s): ?>
+                                <label class="service-item-custom mb-2" for="s<?php echo $s['id']; ?>">
+                                    <input class="service-check" type="checkbox" name="services[]" value="<?php echo $s['id']; ?>" data-price="<?php echo $s['price']; ?>" data-duration="<?php echo $s['duration']; ?>" id="s<?php echo $s['id']; ?>" style="display:none">
+                                    <div class="service-card p-2">
+                                        <div class="service-info">
+                                            <span class="service-name small fw-bold"><?php echo $s['name']; ?></span>
+                                            <span class="service-details x-small text-gray-text"><?php echo $s['duration']; ?> min</span>
+                                        </div>
+                                        <div class="d-flex align-items-center">
+                                            <span class="service-price small text-gold"><?php echo $s['price']; ?> MAD</span>
+                                            <div class="service-check-icon ms-2"></div>
+                                        </div>
+                                    </div>
+                                </label>
+                                <?php endforeach; ?>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label text-gray-text small text-uppercase">Preferred Date</label>
+                            <input type="date" name="booking_date" id="bookingDate" class="form-control" required min="<?php echo date('Y-m-d'); ?>">
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label text-gray-text small text-uppercase">Available Slots</label>
+                            <select name="booking_time" id="bookingTime" class="form-select" required disabled>
+                                <option value="">Select a date first</option>
+                            </select>
+                        </div>
+
+                        <div class="bg-black p-3 rounded-3 mb-4 border border-secondary">
+                            <div class="d-flex justify-content-between mb-2">
+                                <span class="text-gray-text small">Est. Duration:</span>
+                                <span id="totalDuration" class="text-light small fw-bold" data-value="0">0 min</span>
+                            </div>
+                            <div class="d-flex justify-content-between">
+                                <span class="text-gray-text small">Investment:</span>
+                                <span id="totalPrice" class="text-gold fw-bold">0 MAD</span>
+                            </div>
+                        </div>
+
+                        <button type="submit" name="book_now" class="btn btn-gold w-100 py-3 fw-bold text-uppercase" id="bookBtn" disabled>Confirm Booking</button>
+                        <p class="text-center text-gray-text x-small mt-3 mb-0"><i class="fas fa-info-circle me-1"></i> Payment is handled at the salon.</p>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Reviews Content -->
+        <div class="col-lg-8 order-3">
             <!-- Reviews -->
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <h3 class="mb-0 h4 text-uppercase">Client Reviews</h3>
@@ -242,7 +302,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
                                 <div class="text-gold small">
                                     <?php for($i=0; $i<$r['rating']; $i++): ?><i class="fas fa-star"></i><?php endfor; ?>
                                 </div>
-                                <?php if(isset($_SESSION['user_id']) && $_SESSION['user_id'] == $r['customer_id']): ?>
+                                <?php if(isset($_SESSION['user_id']) && $_SESSION['id'] == $r['customer_id']): ?>
                                     <div class="dropdown">
                                         <button class="btn btn-link text-gray-text p-0" data-bs-toggle="dropdown">
                                             <i class="fas fa-ellipsis-h"></i>
@@ -264,63 +324,6 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
                     </div>
                     <?php endforeach; ?>
                 <?php endif; ?>
-            </div>
-        </div>
-
-        <!-- Sidebar (Booking) -->
-        <div class="col-lg-4">
-            <div class="sticky-top" style="top: 100px;">
-                <div class="card-luxury p-4 shadow-lg border-gold">
-                    <h4 class="text-gold mb-4 h5 text-uppercase tracking-wide">Instant Reservation</h4>
-                    <form action="barber_view.php?id=<?php echo $barber_id; ?>" method="POST" id="bookingForm">
-                        <div class="mb-4">
-                            <label class="form-label text-gray-text small text-uppercase">Choose Services</label>
-                            <div class="service-selection-container" style="max-height: 300px; overflow-y: auto;">
-                                <?php foreach($services as $s): ?>
-                                <label class="service-item-custom mb-2" for="s<?php echo $s['id']; ?>">
-                                    <input class="service-check" type="checkbox" name="services[]" value="<?php echo $s['id']; ?>" data-price="<?php echo $s['price']; ?>" data-duration="<?php echo $s['duration']; ?>" id="s<?php echo $s['id']; ?>" style="display:none">
-                                    <div class="service-card p-2">
-                                        <div class="service-info">
-                                            <span class="service-name small fw-bold"><?php echo $s['name']; ?></span>
-                                            <span class="service-details x-small text-gray-text"><?php echo $s['duration']; ?> min</span>
-                                        </div>
-                                        <div class="d-flex align-items-center">
-                                            <span class="service-price small text-gold"><?php echo $s['price']; ?> MAD</span>
-                                            <div class="service-check-icon ms-2"></div>
-                                        </div>
-                                    </div>
-                                </label>
-                                <?php endforeach; ?>
-                            </div>
-                        </div>
-
-                        <div class="mb-4">
-                            <label class="form-label text-gray-text small text-uppercase">Preferred Date</label>
-                            <input type="date" name="booking_date" id="bookingDate" class="form-control" required min="<?php echo date('Y-m-d'); ?>">
-                        </div>
-
-                        <div class="mb-4">
-                            <label class="form-label text-gray-text small text-uppercase">Available Slots</label>
-                            <select name="booking_time" id="bookingTime" class="form-select" required disabled>
-                                <option value="">Select a date first</option>
-                            </select>
-                        </div>
-
-                        <div class="bg-black p-3 rounded-3 mb-4 border border-secondary">
-                            <div class="d-flex justify-content-between mb-2">
-                                <span class="text-gray-text small">Est. Duration:</span>
-                                <span id="totalDuration" class="text-light small fw-bold" data-value="0">0 min</span>
-                            </div>
-                            <div class="d-flex justify-content-between">
-                                <span class="text-gray-text small">Investment:</span>
-                                <span id="totalPrice" class="text-gold fw-bold">0 MAD</span>
-                            </div>
-                        </div>
-
-                        <button type="submit" name="book_now" class="btn btn-gold w-100 py-3 fw-bold text-uppercase" id="bookBtn" disabled>Confirm Booking</button>
-                        <p class="text-center text-gray-text x-small mt-3 mb-0"><i class="fas fa-info-circle me-1"></i> Payment is handled at the salon.</p>
-                    </form>
-                </div>
             </div>
         </div>
     </div>
