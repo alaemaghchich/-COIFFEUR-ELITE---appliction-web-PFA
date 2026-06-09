@@ -92,5 +92,66 @@ class Admin extends User {
 
         return $stats;
     }
+
+    public function getRecentActivity() {
+        $activities = [];
+
+        // New Users (Barbers and Customers)
+        $q1 = "SELECT full_name, role, created_at as date, status FROM users WHERE role != 'admin' ORDER BY created_at DESC LIMIT 5";
+        $s1 = $this->conn->prepare($q1);
+        $s1->execute();
+        while($row = $s1->fetch(PDO::FETCH_ASSOC)) {
+            $activities[] = [
+                'type' => 'registration',
+                'name' => $row['full_name'],
+                'role' => $row['role'],
+                'date' => $row['date'],
+                'status' => $row['status']
+            ];
+        }
+
+        // New Bookings
+        $q2 = "SELECT b.created_at as date, b.status, u.full_name as customer_name, b1.salon_name 
+               FROM bookings b 
+               JOIN users u ON b.customer_id = u.id 
+               JOIN barber_details b1 ON b.barber_id = b1.user_id 
+               ORDER BY b.created_at DESC LIMIT 5";
+        $s2 = $this->conn->prepare($q2);
+        $s2->execute();
+        while($row = $s2->fetch(PDO::FETCH_ASSOC)) {
+            $activities[] = [
+                'type' => 'booking',
+                'customer' => $row['customer_name'],
+                'salon' => $row['salon_name'],
+                'date' => $row['date'],
+                'status' => $row['status']
+            ];
+        }
+
+        // Sort all by date
+        usort($activities, function($a, $b) {
+            return strtotime($b['date']) - strtotime($a['date']);
+        });
+
+        return array_slice($activities, 0, 7);
+    }
+
+    public function getNotificationCounts() {
+        $counts = [];
+
+        // Pending Barbers
+        $q1 = "SELECT COUNT(*) as count FROM users WHERE role = 'barber' AND status = 'pending'";
+        $s1 = $this->conn->prepare($q1);
+        $s1->execute();
+        $counts['pending_barbers'] = $s1->fetch(PDO::FETCH_ASSOC)['count'];
+
+        // Pending Support
+        $q2 = "SELECT COUNT(*) as count FROM support_requests WHERE status = 'pending'";
+        $s2 = $this->conn->prepare($q2);
+        $s2->execute();
+        $counts['pending_support'] = $s2->fetch(PDO::FETCH_ASSOC)['count'];
+
+        return $counts;
+    }
 }
 ?>

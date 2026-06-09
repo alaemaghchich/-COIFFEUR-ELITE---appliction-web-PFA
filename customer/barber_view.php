@@ -98,7 +98,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
 }
 ?>
 
-<div class="container py-5">
+<div class="container py-4 py-lg-5">
     <?php if($success): ?>
         <div class="alert alert-success"><?php echo $success; ?></div>
     <?php endif; ?>
@@ -108,69 +108,76 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     <!-- Barber Header -->
     <div class="row mb-5">
-        <div class="col-12 position-relative">
-            <div class="rounded-3 overflow-hidden" style="height: 350px; background: url('<?php echo $barber['salon_img'] ? '/uploads/salons/'.$barber['salon_img'] : 'https://images.unsplash.com/photo-1512690196236-d5a232ebbc74?auto=format&fit=crop&w=1200&q=80'; ?>') center/cover no-repeat;">
-                <div class="h-100 w-100" style="background: linear-gradient(rgba(0,0,0,0.1), rgba(0,0,0,0.8));"></div>
-            </div>
-            <div class="position-absolute bottom-0 start-0 p-5 w-100 d-flex align-items-end">
-                <div class="position-relative d-inline-block me-4" style="width: 120px; height: 120px;">
-                    <img src="<?php echo $barber['profile_pic'] ? '/uploads/profiles/'.$barber['profile_pic'] : 'https://ui-avatars.com/api/?name='.urlencode($barber['full_name']); ?>" class="rounded-circle border border-4 border-gold" width="120" height="120" style="object-fit: cover;">
-                    <?php if($barber['salon_logo']): ?>
-                        <img src="/uploads/salons/<?php echo $barber['salon_logo']; ?>" class="position-absolute rounded-circle border border-2 border-gold bg-black" style="width: 40px; height: 40px; bottom: -5px; right: -5px; object-fit: cover; z-index: 2;" title="<?php echo htmlspecialchars($barber['salon_name']); ?>">
-                    <?php else: ?>
-                        <img src="https://images.unsplash.com/photo-1585747860715-2ba37e788b70?auto=format&fit=crop&w=100&q=80" class="position-absolute rounded-circle border border-2 border-gold bg-black" style="width: 40px; height: 40px; bottom: -5px; right: -5px; object-fit: cover; z-index: 2;" title="<?php echo htmlspecialchars($barber['salon_name']); ?>">
-                    <?php endif; ?>
+        <div class="col-12">
+            <div class="position-relative rounded-4 overflow-hidden shadow-lg" style="min-height: 250px;">
+                <!-- Cover Image -->
+                <div style="height: 350px; background: url('<?php echo $barber['salon_img'] ? '/uploads/salons/'.$barber['salon_img'] : 'https://images.unsplash.com/photo-1512690196236-d5a232ebbc74?auto=format&fit=crop&w=1200&q=80'; ?>') center/cover no-repeat;">
+                    <div class="h-100 w-100" style="background: linear-gradient(to bottom, rgba(0,0,0,0.1), rgba(0,0,0,0.9));"></div>
                 </div>
-                <div class="mb-2 flex-grow-1">
-                    <h1 class="text-white mb-0"><?php echo $barber['full_name']; ?></h1>
-                    <p class="text-gold lead mb-0"><?php echo $barber['salon_name']; ?></p>
-                </div>
-                <div class="text-end">
-                    <div class="badge bg-gold text-gold fs-5 mb-2"><i class="fas fa-star me-1"></i> <?php echo $barberObj->searchBarbers(['id' => $barber_id])[0]['rating'] ?? '5.0'; ?></div>
-                    <div class="text-gray-text small"><?php echo $barber['city']; ?>, Morocco</div>
+                
+                <!-- Profile Info Overlay -->
+                <div class="position-absolute bottom-0 start-0 w-100 p-3 p-md-4 p-lg-5">
+                    <div class="d-flex flex-column flex-md-row align-items-center align-items-md-end gap-4">
+                        <!-- Profile Pic & Salon Logo -->
+                        <div class="position-relative">
+                            <img src="<?php echo $barber['profile_pic'] ? '/uploads/profiles/'.$barber['profile_pic'] : 'https://ui-avatars.com/api/?name='.urlencode($barber['full_name']); ?>" class="rounded-circle border border-4 border-gold bg-black shadow-lg" width="140" height="140" style="object-fit: cover;">
+                            <?php if($barber['salon_logo']): ?>
+                                <img src="/uploads/salons/<?php echo $barber['salon_logo']; ?>" class="position-absolute rounded-circle border border-2 border-gold bg-black" style="width: 45px; height: 45px; bottom: 5px; right: 5px; object-fit: cover; z-index: 2;">
+                            <?php endif; ?>
+                        </div>
+                        
+                        <!-- Text Info -->
+                        <div class="text-center text-md-start flex-grow-1">
+                            <h1 class="text-white mb-1 h2 fw-bold"><?php echo $barber['full_name']; ?></h1>
+                            <p class="text-gold mb-2 lead small-caps tracking-wide"><?php echo $barber['salon_name']; ?></p>
+                            <div class="d-flex justify-content-center justify-content-md-start align-items-center gap-3">
+                                <span class="badge bg-gold text-dark fs-6"><i class="fas fa-star me-1"></i> <?php echo $barberObj->searchBarbers(['id' => $barber_id])[0]['rating'] ?? '5.0'; ?></span>
+                                <span class="text-gray-text small"><i class="fas fa-map-marker-alt me-1"></i> <?php echo $barber['city']; ?></span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="row g-5">
-        <!-- Details & Services -->
+    <div class="row g-4 g-lg-5">
+        <!-- Main Content (About, Services, Reviews) -->
         <div class="col-lg-8">
-            <div class="card-luxury p-4 mb-5">
-                <h4 class="text-gold mb-3">About the Coiffeur</h4>
-                <p class="text-gray-text"><?php echo $barber['bio']; ?></p>
-                <hr class="border-secondary my-4">
-                <div class="row">
-                    <div class="col-md-4">
+            <!-- About -->
+            <div class="card-luxury p-4 mb-4">
+                <h4 class="text-gold mb-3 h5">Professional Profile</h4>
+                <p class="text-gray-text mb-4"><?php echo $barber['bio']; ?></p>
+                <div class="row g-3">
+                    <div class="col-6 col-md-4">
                         <small class="text-gray-text d-block">Experience</small>
                         <span class="fw-bold"><?php echo $barber['experience_years']; ?> Years</span>
                     </div>
-                    <div class="col-md-4">
-                        <small class="text-gray-text d-block">Working Hours</small>
+                    <div class="col-6 col-md-4">
+                        <small class="text-gray-text d-block">Operating Hours</small>
                         <span class="fw-bold"><?php echo substr($barber['work_start'], 0, 5); ?> - <?php echo substr($barber['work_end'], 0, 5); ?></span>
                     </div>
-                    <div class="col-md-4">
-                        <small class="text-gray-text d-block">Salon Type</small>
+                    <div class="col-6 col-md-4">
+                        <small class="text-gray-text d-block">Target Client</small>
                         <span class="fw-bold"><?php echo ucfirst($barber['salon_type']); ?></span>
                     </div>
                 </div>
                 <div class="mt-4">
-<a href="https://www.google.com/maps?q=<?php echo $barber['lat']; ?>,<?php echo $barber['lon']; ?>" 
-   target="_blank" 
-   class="btn btn-outline-gold btn-sm">
-    <i class="fas fa-map-marker-alt me-2"></i> Open in Google Maps
-</a>
+                    <a href="https://www.google.com/maps?q=<?php echo $barber['lat']; ?>,<?php echo $barber['lon']; ?>" target="_blank" class="btn btn-outline-gold btn-sm w-100 w-md-auto">
+                        <i class="fas fa-location-arrow me-2"></i> Directions via GPS
+                    </a>
                 </div>
             </div>
 
-            <h3 class="mb-4">Services</h3>
-            <div class="row g-4 mb-5">
+            <!-- Services -->
+            <h3 class="mb-4 h4 text-uppercase">Elite Services</h3>
+            <div class="row g-3 mb-5">
                 <?php foreach($services as $s): ?>
                 <div class="col-md-6">
-                    <div class="card-luxury p-0 overflow-hidden d-flex">
-                        <img src="<?php echo $s['image'] ? '/uploads/services/'.$s['image'] : 'https://images.unsplash.com/photo-1599351431202-1e0f0137899a?auto=format&fit=crop&w=200&q=80'; ?>" width="120" style="object-fit: cover;">
+                    <div class="card-luxury p-0 overflow-hidden d-flex h-100">
+                        <img src="<?php echo $s['image'] ? '/uploads/services/'.$s['image'] : 'https://images.unsplash.com/photo-1599351431202-1e0f0137899a?auto=format&fit=crop&w=200&q=80'; ?>" width="100" style="object-fit: cover;">
                         <div class="p-3 flex-grow-1">
-                            <h5 class="text-white mb-1"><?php echo $s['name']; ?></h5>
+                            <h6 class="text-white mb-1"><?php echo $s['name']; ?></h6>
                             <div class="d-flex justify-content-between align-items-center">
                                 <span class="text-gray-text small"><?php echo $s['duration']; ?> min</span>
                                 <span class="text-gold fw-bold"><?php echo $s['price']; ?> MAD</span>
@@ -181,22 +188,23 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <?php endforeach; ?>
             </div>
 
-            <!-- Reviews Section -->
+            <!-- Reviews -->
             <div class="d-flex justify-content-between align-items-center mb-4">
-                <h3 class="mb-0">Reviews</h3>
+                <h3 class="mb-0 h4 text-uppercase">Client Reviews</h3>
                 <?php if(isset($_SESSION['user_id']) && $_SESSION['user_role'] == 'customer'): ?>
                     <button class="btn btn-gold btn-sm" data-bs-toggle="collapse" data-bs-target="#reviewForm">
-                        <i class="fas fa-plus me-2"></i> Write a Review
+                        <i class="fas fa-feather-alt me-2"></i> Write
                     </button>
                 <?php endif; ?>
             </div>
 
+            <!-- Review Form -->
             <?php if(isset($_SESSION['user_id']) && $_SESSION['user_role'] == 'customer'): ?>
             <div class="collapse mb-4" id="reviewForm">
                 <div class="card-luxury p-4">
                     <form action="barber_view.php?id=<?php echo $barber_id; ?>" method="POST">
                         <div class="mb-3">
-                            <label class="form-label text-gray-text">Rating</label>
+                            <label class="form-label text-gray-text small text-uppercase">Rating</label>
                             <div class="rating-input text-gold fs-4" style="cursor: pointer;">
                                 <input type="hidden" name="rating" id="ratingValue" value="5">
                                 <i class="fas fa-star star-btn" data-value="1"></i>
@@ -207,42 +215,42 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
                             </div>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label text-gray-text">Comment</label>
-                            <textarea name="comment" class="form-control" rows="3" placeholder="Share your experience..." required></textarea>
+                            <label class="form-label text-gray-text small text-uppercase">Message</label>
+                            <textarea name="comment" class="form-control" rows="3" placeholder="How was your experience?" required></textarea>
                         </div>
-                        <button type="submit" name="add_review" class="btn btn-gold w-100">Submit Review</button>
+                        <button type="submit" name="add_review" class="btn btn-gold w-100">Post Review</button>
                     </form>
                 </div>
             </div>
             <?php endif; ?>
 
-            <div class="card-luxury p-4">
+            <div class="card-luxury p-4 mb-5">
                 <?php if(empty($reviews)): ?>
-                    <p class="text-gray-text text-center">No reviews yet. Be the first to review!</p>
+                    <p class="text-gray-text text-center py-4">Be the first to share your experience with <?php echo $barber['full_name']; ?>.</p>
                 <?php else: ?>
                     <?php foreach($reviews as $r): ?>
                     <div class="mb-4 pb-4 border-bottom border-secondary last-no-border" id="review-<?php echo $r['id']; ?>">
-                        <div class="d-flex justify-content-between mb-2">
+                        <div class="d-flex justify-content-between mb-3">
                             <div class="d-flex align-items-center">
-                                <img src="<?php echo $r['profile_pic'] ? '/uploads/profiles/'.$r['profile_pic'] : 'https://ui-avatars.com/api/?name='.urlencode($r['full_name']); ?>" class="rounded-circle me-3" width="40" height="40">
+                                <img src="<?php echo $r['profile_pic'] ? '/uploads/profiles/'.$r['profile_pic'] : 'https://ui-avatars.com/api/?name='.urlencode($r['full_name']); ?>" class="rounded-circle me-3 border border-secondary" width="45" height="45">
                                 <div>
-                                    <h6 class="mb-0"><?php echo $r['full_name']; ?></h6>
+                                    <h6 class="mb-0 text-white"><?php echo $r['full_name']; ?></h6>
                                     <small class="text-gray-text"><?php echo date('M d, Y', strtotime($r['created_at'])); ?></small>
                                 </div>
                             </div>
                             <div class="d-flex align-items-center gap-3">
-                                <div class="text-gold">
+                                <div class="text-gold small">
                                     <?php for($i=0; $i<$r['rating']; $i++): ?><i class="fas fa-star"></i><?php endfor; ?>
                                 </div>
                                 <?php if(isset($_SESSION['user_id']) && $_SESSION['user_id'] == $r['customer_id']): ?>
                                     <div class="dropdown">
                                         <button class="btn btn-link text-gray-text p-0" data-bs-toggle="dropdown">
-                                            <i class="fas fa-ellipsis-v"></i>
+                                            <i class="fas fa-ellipsis-h"></i>
                                         </button>
                                         <ul class="dropdown-menu dropdown-menu-dark">
                                             <li><a class="dropdown-item edit-review-btn" href="javascript:void(0)" data-id="<?php echo $r['id']; ?>" data-rating="<?php echo $r['rating']; ?>" data-comment="<?php echo htmlspecialchars($r['comment']); ?>">Edit</a></li>
                                             <li>
-                                                <form action="barber_view.php?id=<?php echo $barber_id; ?>" method="POST" onsubmit="return confirm('Are you sure?')">
+                                                <form action="barber_view.php?id=<?php echo $barber_id; ?>" method="POST" onsubmit="return confirm('Remove this review?')">
                                                     <input type="hidden" name="review_id" value="<?php echo $r['id']; ?>">
                                                     <button type="submit" name="delete_review" class="dropdown-item text-danger">Delete</button>
                                                 </form>
@@ -252,103 +260,112 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
                                 <?php endif; ?>
                             </div>
                         </div>
-                        <p class="text-gray-text mb-2 review-comment"><?php echo $r['comment']; ?></p>
+                        <p class="text-gray-text review-comment mb-0 fst-italic">"<?php echo $r['comment']; ?>"</p>
                     </div>
                     <?php endforeach; ?>
                 <?php endif; ?>
             </div>
         </div>
 
-        <!-- Edit Review Modal -->
-        <div class="modal fade" id="editReviewModal" tabindex="-1">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content bg-dark border-gold">
-                    <div class="modal-header border-secondary">
-                        <h5 class="modal-title text-gold">Edit Your Review</h5>
-                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-                    </div>
-                    <form action="barber_view.php?id=<?php echo $barber_id; ?>" method="POST">
-                        <div class="modal-body">
-                            <input type="hidden" name="review_id" id="editReviewId">
-                            <div class="mb-3">
-                                <label class="form-label text-gray-text">Rating</label>
-                                <div class="rating-input-edit text-gold fs-4">
-                                    <input type="hidden" name="rating" id="editRatingValue">
-                                    <?php for($i=1; $i<=5; $i++): ?>
-                                        <i class="fas fa-star star-edit-btn" data-value="<?php echo $i; ?>" style="cursor: pointer;"></i>
-                                    <?php endfor; ?>
-                                </div>
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label text-gray-text">Comment</label>
-                                <textarea name="comment" id="editComment" class="form-control" rows="3" required></textarea>
+        <!-- Sidebar (Booking) -->
+        <div class="col-lg-4">
+            <div class="sticky-top" style="top: 100px;">
+                <div class="card-luxury p-4 shadow-lg border-gold">
+                    <h4 class="text-gold mb-4 h5 text-uppercase tracking-wide">Instant Reservation</h4>
+                    <form action="barber_view.php?id=<?php echo $barber_id; ?>" method="POST" id="bookingForm">
+                        <div class="mb-4">
+                            <label class="form-label text-gray-text small text-uppercase">Choose Services</label>
+                            <div class="service-selection-container" style="max-height: 300px; overflow-y: auto;">
+                                <?php foreach($services as $s): ?>
+                                <label class="service-item-custom mb-2" for="s<?php echo $s['id']; ?>">
+                                    <input class="service-check" type="checkbox" name="services[]" value="<?php echo $s['id']; ?>" data-price="<?php echo $s['price']; ?>" data-duration="<?php echo $s['duration']; ?>" id="s<?php echo $s['id']; ?>" style="display:none">
+                                    <div class="service-card p-2">
+                                        <div class="service-info">
+                                            <span class="service-name small fw-bold"><?php echo $s['name']; ?></span>
+                                            <span class="service-details x-small text-gray-text"><?php echo $s['duration']; ?> min</span>
+                                        </div>
+                                        <div class="d-flex align-items-center">
+                                            <span class="service-price small text-gold"><?php echo $s['price']; ?> MAD</span>
+                                            <div class="service-check-icon ms-2"></div>
+                                        </div>
+                                    </div>
+                                </label>
+                                <?php endforeach; ?>
                             </div>
                         </div>
-                        <div class="modal-footer border-secondary">
-                            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
-                            <button type="submit" name="update_review" class="btn btn-gold">Save Changes</button>
+
+                        <div class="mb-4">
+                            <label class="form-label text-gray-text small text-uppercase">Preferred Date</label>
+                            <input type="date" name="booking_date" id="bookingDate" class="form-control" required min="<?php echo date('Y-m-d'); ?>">
                         </div>
+
+                        <div class="mb-4">
+                            <label class="form-label text-gray-text small text-uppercase">Available Slots</label>
+                            <select name="booking_time" id="bookingTime" class="form-select" required disabled>
+                                <option value="">Select a date first</option>
+                            </select>
+                        </div>
+
+                        <div class="bg-black p-3 rounded-3 mb-4 border border-secondary">
+                            <div class="d-flex justify-content-between mb-2">
+                                <span class="text-gray-text small">Est. Duration:</span>
+                                <span id="totalDuration" class="text-light small fw-bold" data-value="0">0 min</span>
+                            </div>
+                            <div class="d-flex justify-content-between">
+                                <span class="text-gray-text small">Investment:</span>
+                                <span id="totalPrice" class="text-gold fw-bold">0 MAD</span>
+                            </div>
+                        </div>
+
+                        <button type="submit" name="book_now" class="btn btn-gold w-100 py-3 fw-bold text-uppercase" id="bookBtn" disabled>Confirm Booking</button>
+                        <p class="text-center text-gray-text x-small mt-3 mb-0"><i class="fas fa-info-circle me-1"></i> Payment is handled at the salon.</p>
                     </form>
                 </div>
             </div>
         </div>
+    </div>
+</div>
 
-        <!-- Booking Sidebar -->
-        <div class="col-lg-4">
-            <div class="card-luxury p-4 sticky-top" style="top: 100px;">
-                <h4 class="text-gold mb-4">Book Your Appointment</h4>
-                <form action="barber_view.php?id=<?php echo $barber_id; ?>" method="POST" id="bookingForm">
-                    <div class="mb-4">
-                        <label class="form-label text-gray-text">Select Services</label>
-                        <div class="service-selection-container">
-                            <?php foreach($services as $s): ?>
-                            <label class="service-item-custom" for="s<?php echo $s['id']; ?>">
-                                <input class="form-check-input service-check" type="checkbox" name="services[]" value="<?php echo $s['id']; ?>" data-price="<?php echo $s['price']; ?>" data-duration="<?php echo $s['duration']; ?>" id="s<?php echo $s['id']; ?>">
-                                <div class="service-card">
-                                    <div class="service-info">
-                                        <span class="service-name"><?php echo $s['name']; ?></span>
-                                        <span class="service-details"><?php echo $s['duration']; ?> min</span>
-                                    </div>
-                                    <div class="d-flex align-items-center">
-                                        <span class="service-price"><?php echo $s['price']; ?> MAD</span>
-                                        <div class="service-check-icon"></div>
-                                    </div>
-                                </div>
-                            </label>
-                            <?php endforeach; ?>
-                        </div>
-                    </div>
-
-                    <div class="mb-4">
-                        <label class="form-label text-gray-text">Select Date</label>
-                        <input type="date" name="booking_date" id="bookingDate" class="form-control" required min="<?php echo date('Y-m-d'); ?>">
-                    </div>
-
-                    <div class="mb-4">
-                        <label class="form-label text-gray-text">Select Time</label>
-                        <select name="booking_time" id="bookingTime" class="form-select" required disabled>
-                            <option value="">Select a date first</option>
-                        </select>
-                    </div>
-
-                    <div class="bg-black p-3 rounded mb-4">
-                        <div class="d-flex justify-content-between mb-2">
-                            <span class="text-gray-text">Total Duration:</span>
-                            <span id="totalDuration" class="text-light" data-value="0">0 min</span>
-                        </div>
-                        <div class="d-flex justify-content-between">
-                            <span class="text-gray-text">Total Price:</span>
-                            <span id="totalPrice" class="text-gold fw-bold">0 MAD</span>
-                        </div>
-                    </div>
-
-                    <button type="submit" name="book_now" class="btn btn-gold w-100 py-3" id="bookBtn" disabled>Reserve Now</button>
-                    <p class="text-center text-gray-text small mt-3">Payment will be done at the salon.</p>
-                </form>
+<!-- Edit Review Modal -->
+<div class="modal fade" id="editReviewModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content bg-dark border-gold">
+            <div class="modal-header border-secondary">
+                <h5 class="modal-title text-gold small text-uppercase fw-bold">Update Review</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
             </div>
+            <form action="barber_view.php?id=<?php echo $barber_id; ?>" method="POST">
+                <div class="modal-body">
+                    <input type="hidden" name="review_id" id="editReviewId">
+                    <div class="mb-3">
+                        <label class="form-label text-gray-text small text-uppercase">Rating</label>
+                        <div class="rating-input-edit text-gold fs-4">
+                            <input type="hidden" name="rating" id="editRatingValue">
+                            <?php for($i=1; $i<=5; $i++): ?>
+                                <i class="fas fa-star star-edit-btn" data-value="<?php echo $i; ?>" style="cursor: pointer;"></i>
+                            <?php endfor; ?>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label text-gray-text small text-uppercase">Message</label>
+                        <textarea name="comment" id="editComment" class="form-control" rows="3" required></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer border-secondary">
+                    <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" name="update_review" class="btn btn-sm btn-gold">Update</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
+
+<style>
+.small-caps { font-variant: small-caps; }
+.tracking-wide { letter-spacing: 1px; }
+.x-small { font-size: 0.75rem; }
+.last-no-border:last-child { border-bottom: none !important; }
+</style>
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
@@ -409,15 +426,15 @@ document.addEventListener('DOMContentLoaded', function() {
         lastDuration = duration;
 
         bookingTime.disabled = true;
-        bookingTime.innerHTML = '<option value="">Loading times...</option>';
+        bookingTime.innerHTML = '<option value="">Searching...</option>';
 
         fetch(`ajax_get_available_times.php?barber_id=${barberId}&date=${date}&duration=${duration}`)
             .then(response => response.json())
             .then(data => {
                 if(data.status === 'success') {
-                    bookingTime.innerHTML = '<option value="">Choose a time</option>';
+                    bookingTime.innerHTML = '<option value="">Select Time</option>';
                     if(data.times.length === 0) {
-                        bookingTime.innerHTML = '<option value="">No available slots for this date</option>';
+                        bookingTime.innerHTML = '<option value="">Fully Booked</option>';
                     } else {
                         data.times.forEach(time => {
                             const option = document.createElement('option');
@@ -432,7 +449,7 @@ document.addEventListener('DOMContentLoaded', function() {
             })
             .catch(error => {
                 console.error('Error:', error);
-                bookingTime.innerHTML = '<option value="">Error loading times</option>';
+                bookingTime.innerHTML = '<option value="">Error</option>';
                 updateButtonState();
             });
     }
@@ -444,55 +461,38 @@ document.addEventListener('DOMContentLoaded', function() {
     bookingDate.addEventListener('change', updateTotals);
     bookingTime.addEventListener('change', () => updateButtonState());
 
-    // Star Rating interaction
+    // Star Rating
     const stars = document.querySelectorAll('.star-btn');
     const ratingValue = document.getElementById('ratingValue');
 
     stars.forEach(star => {
-        star.addEventListener('mouseover', function() {
-            const val = this.dataset.value;
-            highlightStars(val);
-        });
-
-        star.addEventListener('mouseout', function() {
-            highlightStars(ratingValue.value);
-        });
-
+        star.addEventListener('mouseover', function() { highlightStars(this.dataset.value); });
+        star.addEventListener('mouseout', function() { highlightStars(ratingValue.value); });
         star.addEventListener('click', function() {
-            const val = this.dataset.value;
-            ratingValue.value = val;
-            highlightStars(val);
+            ratingValue.value = this.dataset.value;
+            highlightStars(this.dataset.value);
         });
     });
 
     function highlightStars(val) {
         stars.forEach(s => {
-            if(s.dataset.value <= val) {
-                s.classList.remove('far');
-                s.classList.add('fas');
-            } else {
-                s.classList.remove('fas');
-                s.classList.add('far');
-            }
+            s.classList.toggle('fas', s.dataset.value <= val);
+            s.classList.toggle('far', s.dataset.value > val);
         });
     }
 
-    // Initialize stars (default 5)
     highlightStars(5);
 
-    // Edit Review Logic
+    // Edit Review
     const editModal = new bootstrap.Modal(document.getElementById('editReviewModal'));
-    const editReviewBtns = document.querySelectorAll('.edit-review-btn');
-    const editRatingValue = document.getElementById('editRatingValue');
-    const editComment = document.getElementById('editComment');
-    const editReviewId = document.getElementById('editReviewId');
     const editStars = document.querySelectorAll('.star-edit-btn');
+    const editRatingValue = document.getElementById('editRatingValue');
 
-    editReviewBtns.forEach(btn => {
+    document.querySelectorAll('.edit-review-btn').forEach(btn => {
         btn.addEventListener('click', function() {
-            editReviewId.value = this.dataset.id;
+            document.getElementById('editReviewId').value = this.dataset.id;
             editRatingValue.value = this.dataset.rating;
-            editComment.value = this.dataset.comment;
+            document.getElementById('editComment').value = this.dataset.comment;
             updateEditStars(this.dataset.rating);
             editModal.show();
         });
@@ -500,21 +500,15 @@ document.addEventListener('DOMContentLoaded', function() {
 
     editStars.forEach(star => {
         star.addEventListener('click', function() {
-            const val = this.dataset.value;
-            editRatingValue.value = val;
-            updateEditStars(val);
+            editRatingValue.value = this.dataset.value;
+            updateEditStars(this.dataset.value);
         });
     });
 
     function updateEditStars(val) {
         editStars.forEach(s => {
-            if(s.dataset.value <= val) {
-                s.classList.remove('far');
-                s.classList.add('fas');
-            } else {
-                s.classList.remove('fas');
-                s.classList.add('far');
-            }
+            s.classList.toggle('fas', s.dataset.value <= val);
+            s.classList.toggle('far', s.dataset.value > val);
         });
     }
 });

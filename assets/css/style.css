@@ -167,12 +167,128 @@ h1, h2, h3, h4, h5, h6 {
     z-index: 2;
 }
 
-/* Dashboard Sidebar */
+/* Dashboard Sidebar & Layout */
+.admin-layout {
+    display: flex;
+    min-height: 100vh;
+    overflow-x: hidden; /* Prevent horizontal scroll */
+}
+
 .sidebar {
     background-color: var(--darker-bg);
     border-right: var(--luxury-border);
-    min-height: 100vh;
+    width: 280px;
+    min-width: 280px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 1050;
+    position: sticky;
+    top: 0;
+    height: 100vh;
 }
+
+.sidebar.collapsed {
+    width: 80px;
+    min-width: 80px;
+}
+
+.sidebar.collapsed .sidebar-text,
+.sidebar.collapsed h3 {
+    display: none;
+}
+
+.sidebar.collapsed .nav-link {
+    text-align: center;
+    padding: 12px;
+}
+
+.sidebar.collapsed .nav-link i {
+    margin-right: 0 !important;
+    font-size: 1.2rem;
+}
+
+.main-content {
+    flex-grow: 1;
+    transition: all 0.3s ease;
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+    background-color: var(--dark-bg);
+}
+
+.sidebar-toggle {
+    background: rgba(212, 175, 55, 0.1);
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    padding: 8px 12px;
+    border-radius: 5px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+
+.sidebar-toggle:hover {
+    background: var(--gold);
+    color: var(--dark-bg);
+}
+
+/* Notification Dots */
+.nav-item {
+    position: relative;
+}
+
+.notification-dot {
+    position: absolute;
+    top: 8px;
+    right: 15px;
+    width: 10px;
+    height: 10px;
+    background-color: var(--gold);
+    border-radius: 50%;
+    box-shadow: 0 0 10px var(--gold);
+}
+
+.sidebar.collapsed .notification-dot {
+    top: 5px;
+    right: 5px;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 992px) {
+    .sidebar {
+        position: fixed;
+        left: -280px;
+    }
+    
+    .sidebar.active {
+        left: 0;
+    }
+    
+    .main-content {
+        padding: 15px !important;
+    }
+    
+    .stat-card h2 {
+        font-size: 1.5rem;
+    }
+    
+    .stat-card h6 {
+        font-size: 0.7rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .card-luxury {
+        padding: 15px !important;
+    }
+    
+    header h2 {
+        font-size: 1.2rem;
+    }
+}
+
 .btn-outline-gold {
     color: #fff;
     border: 1px solid #fff;
