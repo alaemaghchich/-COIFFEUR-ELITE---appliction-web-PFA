@@ -21,7 +21,6 @@ CREATE TABLE IF NOT EXISTS users (
 CREATE TABLE IF NOT EXISTS barber_details (
     id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
-    age INT,
     bio TEXT,
     experience_years INT,
     salon_name VARCHAR(100),

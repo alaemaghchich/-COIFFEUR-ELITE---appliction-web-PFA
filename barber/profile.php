@@ -178,9 +178,7 @@ $details = $barber->getBarberDetails($barber_id);
                                     </select>
                                 </div>
                                 <div class="col-md-6">
-                                    <label class="form-label text-gray-text">Age</label>
-                                    <input type="number" name="age" class="form-control bg-dark text-white border-secondary" value="<?php echo $details['age']; ?>">
-                                </div>
+
                                 <div class="col-md-6">
                                     <label class="form-label text-gray-text">Experience (Years)</label>
                                     <input type="number" name="experience_years" class="form-control bg-dark text-white border-secondary" value="<?php echo $details['experience_years']; ?>">

@@ -25,12 +25,12 @@ class Support {
                   SET name=:name, email=:email, type=:type, message=:message";
         
         $stmt = $this->conn->prepare($query);
-        $stmt->bindParam(":name", $name);
-        $stmt->bindParam(":email", $email);
-        $stmt->bindParam(":type", $type);
-        $stmt->bindParam(":message", $message);
-
-        return $stmt->execute();
+        return $stmt->execute([
+            ":name" => $name,
+            ":email" => $email,
+            ":type" => $type,
+            ":message" => $message
+        ]);
     }
 
     public function getAll() {
@@ -43,9 +43,7 @@ class Support {
     public function updateStatus($id, $status) {
         $query = "UPDATE " . $this->table_name . " SET status = :status WHERE id = :id";
         $stmt = $this->conn->prepare($query);
-        $stmt->bindParam(":status", $status);
-        $stmt->bindParam(":id", $id);
-        return $stmt->execute();
+        return $stmt->execute([":status" => $status, ":id" => $id]);
     }
 }
 ?>

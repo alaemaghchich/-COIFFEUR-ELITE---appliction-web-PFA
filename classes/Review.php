@@ -14,8 +14,7 @@ class Review {
                   WHERE r.barber_id = :barber_id 
                   ORDER BY r.created_at DESC";
         $stmt = $this->conn->prepare($query);
-        $stmt->bindParam(":barber_id", $barber_id);
-        $stmt->execute();
+        $stmt->execute([":barber_id" => $barber_id]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
@@ -24,19 +23,18 @@ class Review {
                   SET rating=:rating, comment=:comment 
                   WHERE id=:id AND customer_id=:customer_id";
         $stmt = $this->conn->prepare($query);
-        $stmt->bindParam(":rating", $rating);
-        $stmt->bindParam(":comment", $comment);
-        $stmt->bindParam(":id", $id);
-        $stmt->bindParam(":customer_id", $customer_id);
-        return $stmt->execute();
+        return $stmt->execute([
+            ":rating" => $rating,
+            ":comment" => $comment,
+            ":id" => $id,
+            ":customer_id" => $customer_id
+        ]);
     }
 
     public function delete($id, $customer_id) {
         $query = "DELETE FROM " . $this->table_name . " WHERE id=:id AND customer_id=:customer_id";
         $stmt = $this->conn->prepare($query);
-        $stmt->bindParam(":id", $id);
-        $stmt->bindParam(":customer_id", $customer_id);
-        return $stmt->execute();
+        return $stmt->execute([":id" => $id, ":customer_id" => $customer_id]);
     }
 
     public function create($customer_id, $barber_id, $rating, $comment) {
@@ -44,11 +42,12 @@ class Review {
                   SET customer_id=:customer_id, barber_id=:barber_id, rating=:rating, 
                       comment=:comment";
         $stmt = $this->conn->prepare($query);
-        $stmt->bindParam(":customer_id", $customer_id);
-        $stmt->bindParam(":barber_id", $barber_id);
-        $stmt->bindParam(":rating", $rating);
-        $stmt->bindParam(":comment", $comment);
-        return $stmt->execute();
+        return $stmt->execute([
+            ":customer_id" => $customer_id,
+            ":barber_id" => $barber_id,
+            ":rating" => $rating,
+            ":comment" => $comment
+        ]);
     }
 }
 ?>

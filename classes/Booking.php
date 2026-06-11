@@ -13,21 +13,19 @@ class Booking {
                       start_time=:start_time, end_time=:end_time, total_price=:total_price, status='pending'";
         
         $stmt = $this->conn->prepare($query);
-        $stmt->bindParam(":customer_id", $customer_id);
-        $stmt->bindParam(":barber_id", $barber_id);
-        $stmt->bindParam(":date", $date);
-        $stmt->bindParam(":start_time", $start_time);
-        $stmt->bindParam(":end_time", $end_time);
-        $stmt->bindParam(":total_price", $total_price);
-
-        if($stmt->execute()) {
+        if($stmt->execute([
+            ":customer_id" => $customer_id,
+            ":barber_id" => $barber_id,
+            ":date" => $date,
+            ":start_time" => $start_time,
+            ":end_time" => $end_time,
+            ":total_price" => $total_price
+        ])) {
             $booking_id = $this->conn->lastInsertId();
             foreach($service_ids as $sid) {
                 $q = "INSERT INTO booking_services (booking_id, service_id) VALUES (:bid, :sid)";
                 $s = $this->conn->prepare($q);
-                $s->bindParam(":bid", $booking_id);
-                $s->bindParam(":sid", $sid);
-                $s->execute();
+                $s->execute([":bid" => $booking_id, ":sid" => $sid]);
             }
             return $booking_id;
         }
@@ -44,8 +42,7 @@ class Booking {
                   WHERE b.barber_id = :barber_id 
                   ORDER BY b.booking_date ASC, b.start_time ASC";
         $stmt = $this->conn->prepare($query);
-        $stmt->bindParam(":barber_id", $barber_id);
-        $stmt->execute();
+        $stmt->execute([":barber_id" => $barber_id]);
         $bookings = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         // Get services for each booking
@@ -54,8 +51,7 @@ class Booking {
                   JOIN booking_services bs ON s.id = bs.service_id 
                   WHERE bs.booking_id = :bid";
             $s = $this->conn->prepare($q);
-            $s->bindParam(":bid", $b['id']);
-            $s->execute();
+            $s->execute([":bid" => $b['id']]);
             $b['services'] = $s->fetchAll(PDO::FETCH_COLUMN);
         }
         return $bookings;
@@ -66,9 +62,7 @@ class Booking {
                   WHERE barber_id = :barber_id AND booking_date = :date 
                   AND status IN ('pending', 'accepted')";
         $stmt = $this->conn->prepare($query);
-        $stmt->bindParam(":barber_id", $barber_id);
-        $stmt->bindParam(":date", $date);
-        $stmt->execute();
+        $stmt->execute([":barber_id" => $barber_id, ":date" => $date]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
@@ -80,17 +74,13 @@ class Booking {
                   AND status = 'pending' 
                   AND TIMESTAMP(booking_date, start_time) <= DATE_ADD(NOW(), INTERVAL 1 HOUR)";
         $stmt = $this->conn->prepare($query);
-        $stmt->bindParam(":barber_id", $barber_id);
-        $stmt->execute();
+        $stmt->execute([":barber_id" => $barber_id]);
     }
 
     public function updateStatus($booking_id, $barber_id, $status) {
         $query = "UPDATE bookings SET status = :status WHERE id = :id AND barber_id = :barber_id";
         $stmt = $this->conn->prepare($query);
-        $stmt->bindParam(":status", $status);
-        $stmt->bindParam(":id", $booking_id);
-        $stmt->bindParam(":barber_id", $barber_id);
-        return $stmt->execute();
+        return $stmt->execute([":status" => $status, ":id" => $booking_id, ":barber_id" => $barber_id]);
     }
 
     public function cancelByCustomer($booking_id, $customer_id) {
@@ -98,9 +88,7 @@ class Booking {
         $query = "UPDATE bookings SET status = 'cancelled' 
                   WHERE id = :id AND customer_id = :customer_id AND status IN ('pending', 'accepted')";
         $stmt = $this->conn->prepare($query);
-        $stmt->bindParam(":id", $booking_id);
-        $stmt->bindParam(":customer_id", $customer_id);
-        return $stmt->execute();
+        return $stmt->execute([":id" => $booking_id, ":customer_id" => $customer_id]);
     }
 
     public function getCustomerBookings($customer_id) {
@@ -112,8 +100,7 @@ class Booking {
                   WHERE b.customer_id = :customer_id 
                   ORDER BY b.booking_date DESC, b.start_time DESC";
         $stmt = $this->conn->prepare($query);
-        $stmt->bindParam(":customer_id", $customer_id);
-        $stmt->execute();
+        $stmt->execute([":customer_id" => $customer_id]);
         $bookings = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         foreach($bookings as &$b) {
@@ -121,8 +108,7 @@ class Booking {
                   JOIN booking_services bs ON s.id = bs.service_id 
                   WHERE bs.booking_id = :bid";
             $s = $this->conn->prepare($q);
-            $s->bindParam(":bid", $b['id']);
-            $s->execute();
+            $s->execute([":bid" => $b['id']]);
             $b['services'] = $s->fetchAll(PDO::FETCH_COLUMN);
         }
         return $bookings;
@@ -136,9 +122,7 @@ class Booking {
                   JOIN barber_details bd ON b.barber_id = bd.user_id
                   WHERE b.id = :id AND b.customer_id = :customer_id";
         $stmt = $this->conn->prepare($query);
-        $stmt->bindParam(":id", $booking_id);
-        $stmt->bindParam(":customer_id", $customer_id);
-        $stmt->execute();
+        $stmt->execute([":id" => $booking_id, ":customer_id" => $customer_id]);
         $booking = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if($booking) {
@@ -146,8 +130,7 @@ class Booking {
                   JOIN booking_services bs ON s.id = bs.service_id 
                   WHERE bs.booking_id = :bid";
             $s = $this->conn->prepare($q);
-            $s->bindParam(":bid", $booking['id']);
-            $s->execute();
+            $s->execute([":bid" => $booking['id']]);
             $booking['services'] = $s->fetchAll(PDO::FETCH_ASSOC);
         }
         return $booking;

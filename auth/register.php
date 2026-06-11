@@ -43,7 +43,6 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
         $barber->password = $_POST['password'];
         $barber->gender = $_POST['gender'];
         $barber->city = $_POST['city'];
-        $barber->age = $_POST['age'];
         $barber->bio = $_POST['bio'];
         $barber->experience_years = $_POST['experience_years'];
         $barber->salon_name = $_POST['salon_name'];
@@ -167,10 +166,7 @@ $cities = ["Casablanca", "Rabat", "Marrakech", "Fes", "Tangier", "Agadir", "Mekn
                         <div id="barberFields" class="form-section">
                             <h4 class="text-gold mb-4 border-bottom border-secondary pb-2">Salon Details</h4>
                             <div class="row g-3 mb-4">
-                                <div class="col-md-4">
-                                    <label class="form-label text-gray-text">Age</label>
-                                    <input type="number" name="age" class="form-control">
-                                </div>
+
                                 <div class="col-md-4">
                                     <label class="form-label text-gray-text">Experience (Years)</label>
                                     <input type="number" name="experience_years" class="form-control">

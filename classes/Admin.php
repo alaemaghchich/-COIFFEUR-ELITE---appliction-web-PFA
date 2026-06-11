@@ -5,40 +5,31 @@ class Admin extends User {
     public function getAllUsers($filters = []) {
         $query = "SELECT * FROM users WHERE role != 'admin'";
         
+        $params = [];
         if(!empty($filters['name'])) {
             $query .= " AND full_name LIKE :name";
+            $params[':name'] = "%" . $filters['name'] . "%";
         }
         if(!empty($filters['role'])) {
             $query .= " AND role = :role";
+            $params[':role'] = $filters['role'];
         }
         if(!empty($filters['city'])) {
             $query .= " AND city = :city";
+            $params[':city'] = $filters['city'];
         }
         
         $query .= " ORDER BY created_at DESC";
         
         $stmt = $this->conn->prepare($query);
-        
-        if(!empty($filters['name'])) {
-            $name = "%" . $filters['name'] . "%";
-            $stmt->bindParam(":name", $name);
-        }
-        if(!empty($filters['role'])) {
-            $stmt->bindParam(":role", $filters['role']);
-        }
-        if(!empty($filters['city'])) {
-            $stmt->bindParam(":city", $filters['city']);
-        }
-        
-        $stmt->execute();
+        $stmt->execute($params);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public function deleteUser($id) {
         $query = "DELETE FROM users WHERE id = :id";
         $stmt = $this->conn->prepare($query);
-        $stmt->bindParam(":id", $id);
-        return $stmt->execute();
+        return $stmt->execute([":id" => $id]);
     }
 
     public function getPendingBarbers() {
@@ -53,9 +44,7 @@ class Admin extends User {
     public function updateBarberStatus($id, $status) {
         $query = "UPDATE users SET status = :status WHERE id = :id";
         $stmt = $this->conn->prepare($query);
-        $stmt->bindParam(":status", $status);
-        $stmt->bindParam(":id", $id);
-        return $stmt->execute();
+        return $stmt->execute([":status" => $status, ":id" => $id]);
     }
 
     public function getBlacklist() {
@@ -68,8 +57,7 @@ class Admin extends User {
     public function removeFromBlacklist($id) {
         $query = "DELETE FROM blacklist WHERE id = :id";
         $stmt = $this->conn->prepare($query);
-        $stmt->bindParam(":id", $id);
-        return $stmt->execute();
+        return $stmt->execute([":id" => $id]);
     }
 
     public function getStats() {

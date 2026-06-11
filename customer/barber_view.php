@@ -131,7 +131,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
                             <h1 class="text-white mb-1 h2 fw-bold"><?php echo $barber['full_name']; ?></h1>
                             <p class="text-gold mb-2 lead small-caps tracking-wide"><?php echo $barber['salon_name']; ?></p>
                             <div class="d-flex justify-content-center justify-content-md-start align-items-center gap-3">
-                                <span class="badge bg-gold text-dark fs-6"><i class="fas fa-star me-1"></i> <?php echo $barberObj->searchBarbers(['id' => $barber_id])[0]['rating'] ?? '5.0'; ?></span>
+                                <span class="badge bg-gold text-gold fs-6"><i class="fas fa-star me-1"></i> <?php echo $barberObj->searchBarbers(['id' => $barber_id])[0]['rating'] ?? '5.0'; ?></span>
                                 <span class="text-gray-text small"><i class="fas fa-map-marker-alt me-1"></i> <?php echo $barber['city']; ?></span>
                             </div>
                         </div>
@@ -302,7 +302,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
                                 <div class="text-gold small">
                                     <?php for($i=0; $i<$r['rating']; $i++): ?><i class="fas fa-star"></i><?php endfor; ?>
                                 </div>
-                                <?php if(isset($_SESSION['user_id']) && $_SESSION['id'] == $r['customer_id']): ?>
+                                <?php if(isset($_SESSION['user_id']) && $_SESSION['user_id'] == $r['customer_id']): ?>
                                     <div class="dropdown">
                                         <button class="btn btn-link text-gray-text p-0" data-bs-toggle="dropdown">
                                             <i class="fas fa-ellipsis-h"></i>
