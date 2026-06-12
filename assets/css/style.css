@@ -279,6 +279,22 @@ h1, h2, h3, h4, h5, h6 {
     }
 }
 
+/* Laptop/Desktop Fine-tuning */
+@media (min-width: 992px) and (max-width: 1400px) {
+    .main-content.p-lg-5 {
+        padding: 1.5rem 2rem !important;
+    }
+    
+    .card-luxury {
+        padding: 1.5rem !important;
+    }
+
+    .sidebar {
+        width: 260px;
+        min-width: 260px;
+    }
+}
+
 @media (max-width: 576px) {
     .card-luxury {
         padding: 15px !important;

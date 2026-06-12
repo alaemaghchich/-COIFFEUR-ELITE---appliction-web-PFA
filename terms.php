@@ -26,10 +26,6 @@ include_once 'includes/header.php';
                     <p class="text-gray-text lh-lg">The platform is not responsible for agreements or payments made outside the site system.</p>
                 </div>
             </div>
-
-            <div class="text-center mt-4">
-                <p class="text-gray-text small">Last update: <?php echo date('Y/m/d'); ?></p>
-            </div>
         </div>
     </div>
 </div>

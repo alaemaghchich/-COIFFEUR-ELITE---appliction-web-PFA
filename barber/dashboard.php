@@ -103,7 +103,7 @@ $services = $service->getByBarber($barber_id);
 
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <h4 class="text-gold mb-0"><i class="fas fa-calendar-check me-2"></i> Appointments</h4>
-                <div class="badge bg-gold text-dark"><?php echo count($bookings); ?> Total</div>
+                <div class="badge bg-gold text-white"><?php echo count($bookings); ?> Total</div>
             </div>
 
             <div class="card-luxury p-0 overflow-hidden">

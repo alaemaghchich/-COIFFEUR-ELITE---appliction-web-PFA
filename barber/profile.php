@@ -141,7 +141,7 @@ $details = $barber->getBarberDetails($barber_id);
             <form action="profile.php" method="POST" enctype="multipart/form-data">
                 <div class="row g-4">
                     <!-- Personal Information -->
-                    <div class="col-lg-6">
+                    <div class="col-xl-6">
                         <div class="card-luxury p-4 h-100">
                             <h4 class="text-gold mb-4"><i class="fas fa-user me-2"></i> Personal Details</h4>
                             
@@ -178,8 +178,6 @@ $details = $barber->getBarberDetails($barber_id);
                                     </select>
                                 </div>
                                 <div class="col-md-6">
-
-                                <div class="col-md-6">
                                     <label class="form-label text-gray-text">Experience (Years)</label>
                                     <input type="number" name="experience_years" class="form-control bg-dark text-white border-secondary" value="<?php echo $details['experience_years']; ?>">
                                 </div>
@@ -192,7 +190,7 @@ $details = $barber->getBarberDetails($barber_id);
                     </div>
 
                     <!-- Salon Information -->
-                    <div class="col-lg-6">
+                    <div class="col-xl-6">
                         <div class="card-luxury p-4 h-100">
                             <h4 class="text-gold mb-4"><i class="fas fa-store me-2"></i> Salon Details</h4>
                             

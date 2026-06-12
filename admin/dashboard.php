@@ -157,7 +157,7 @@ function time_ago($timestamp) {
             <div class="card-luxury p-4">
                 <div class="d-flex justify-content-between align-items-center mb-4">
                     <h4 class="mb-0">Recent Platform Activity</h4>
-                    <span class="badge bg-gold text-dark"><?php echo count($activities); ?> New</span>
+                    <span class="badge bg-gold"><?php echo count($activities); ?> New</span>
                 </div>
                 <div class="table-responsive">
                     <table class="table table-dark table-hover mb-0">

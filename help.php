@@ -35,7 +35,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit_support'])) {
                             </button>
                         </h2>
                         <div id="h1" class="accordion-collapse collapse" data-bs-parent="#helpAccordion">
-                            <div class="accordion-body text-gray-text pb-4">
+                            <div class="accordion-body text-white pb-4">
                                 To book: find a barber, choose services, pick date and time, then click "Book".
                             </div>
                         </div>
@@ -48,7 +48,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit_support'])) {
                             </button>
                         </h2>
                         <div id="h2" class="accordion-collapse collapse" data-bs-parent="#helpAccordion">
-                            <div class="accordion-body text-gray-text pb-4">
+                            <div class="accordion-body text-white pb-4">
                                 You can cancel from "My Bookings" in your account. Choose the booking and click cancel.
                             </div>
                         </div>
@@ -61,7 +61,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit_support'])) {
                             </button>
                         </h2>
                         <div id="h3" class="accordion-collapse collapse" data-bs-parent="#helpAccordion">
-                            <div class="accordion-body text-gray-text pb-4">
+                            <div class="accordion-body text-white pb-4">
                                 Click "Login" or "Register", choose your role (customer or barber), and fill the form.
                             </div>
                         </div>
@@ -74,7 +74,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit_support'])) {
                             </button>
                         </h2>
                         <div id="h4" class="accordion-collapse collapse" data-bs-parent="#helpAccordion">
-                            <div class="accordion-body text-gray-text pb-4">
+                            <div class="accordion-body text-white pb-4">
                                 You can find the barber's contact (phone) on their profile page after you log in.
                             </div>
                         </div>
