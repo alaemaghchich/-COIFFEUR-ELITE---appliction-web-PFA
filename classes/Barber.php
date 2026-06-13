@@ -1,5 +1,5 @@
 <?php
-require_once 'User.php';
+require_once __DIR__ . '/User.php';
 
 class Barber extends User {
     private $details_table = "barber_details";
@@ -176,7 +176,7 @@ class Barber extends User {
         return $barbers;
     }
 
-    private function getAverageRating($barber_id) {
+    public function getAverageRating($barber_id) {
         $query = "SELECT AVG(rating) as avg FROM reviews WHERE barber_id = :id";
         $stmt = $this->conn->prepare($query);
         $stmt->execute([":id" => $barber_id]);

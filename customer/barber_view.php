@@ -131,7 +131,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
                             <h1 class="text-white mb-1 h2 fw-bold"><?php echo $barber['full_name']; ?></h1>
                             <p class="text-gold mb-2 lead small-caps tracking-wide"><?php echo $barber['salon_name']; ?></p>
                             <div class="d-flex justify-content-center justify-content-md-start align-items-center gap-3">
-                                <span class="badge bg-gold text-gold fs-6"><i class="fas fa-star me-1"></i> <?php echo $barberObj->searchBarbers(['id' => $barber_id])[0]['rating'] ?? '5.0'; ?></span>
+                                <span class="badge bg-gold text-gold fs-6"><i class="fas fa-star me-1"></i> <?php echo $barberObj->getAverageRating($barber_id); ?></span>
                                 <span class="text-gray-text small"><i class="fas fa-map-marker-alt me-1"></i> <?php echo $barber['city']; ?></span>
                             </div>
                         </div>
@@ -224,7 +224,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
                         <div class="mb-4">
                             <label class="form-label text-gray-text small text-uppercase">Available Slots</label>
                             <select name="booking_time" id="bookingTime" class="form-select" required disabled>
-                                <option value="">Select a date first</option>
+                                <option value="">Select services and date first</option>
                             </select>
                         </div>
 
@@ -382,6 +382,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     let lastDate = '';
     let lastDuration = 0;
+    let fetchRequestId = 0;
 
     function updateTotals() {
         let totalDuration = 0;
@@ -390,8 +391,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
         checks.forEach(check => {
             if(check.checked) {
-                totalDuration += parseInt(check.dataset.duration);
-                totalPrice += parseFloat(check.dataset.price);
+                totalDuration += parseInt(check.dataset.duration, 10) || 0;
+                totalPrice += parseFloat(check.dataset.price) || 0;
                 selectedCount++;
             }
         });
@@ -401,15 +402,19 @@ document.addEventListener('DOMContentLoaded', function() {
         priceSpan.textContent = totalPrice + ' MAD';
         
         const date = bookingDate.value;
-        const duration = totalDuration > 0 ? totalDuration : 15;
 
-        if(date) {
-            if(date !== lastDate || duration !== lastDuration) {
-                fetchAvailableTimes(date, duration);
+        if (selectedCount > 0 && date) {
+            if (date !== lastDate || totalDuration !== lastDuration) {
+                fetchAvailableTimes(date, totalDuration);
             }
         } else {
             bookingTime.disabled = true;
-            bookingTime.innerHTML = '<option value="">Select a date first</option>';
+            bookingTime.value = '';
+            if (selectedCount === 0) {
+                bookingTime.innerHTML = '<option value="">Select services first</option>';
+            } else {
+                bookingTime.innerHTML = '<option value="">Select a date first</option>';
+            }
             lastDate = '';
             lastDuration = 0;
         }
@@ -427,17 +432,25 @@ document.addEventListener('DOMContentLoaded', function() {
     function fetchAvailableTimes(date, duration) {
         lastDate = date;
         lastDuration = duration;
+        const requestId = ++fetchRequestId;
 
         bookingTime.disabled = true;
         bookingTime.innerHTML = '<option value="">Searching...</option>';
 
-        fetch(`ajax_get_available_times.php?barber_id=${barberId}&date=${date}&duration=${duration}`)
-            .then(response => response.json())
+        fetch(`/customer/ajax_get_available_times.php?barber_id=${barberId}&date=${encodeURIComponent(date)}&duration=${duration}`)
+            .then(response => {
+                if (!response.ok) throw new Error('Network response was not ok');
+                return response.json();
+            })
             .then(data => {
-                if(data.status === 'success') {
-                    bookingTime.innerHTML = '<option value="">Select Time</option>';
-                    if(data.times.length === 0) {
+                if (requestId !== fetchRequestId) return;
+
+                bookingTime.innerHTML = '<option value="">Select Time</option>';
+
+                if (data.status === 'success') {
+                    if (!data.times || data.times.length === 0) {
                         bookingTime.innerHTML = '<option value="">Fully Booked</option>';
+                        bookingTime.disabled = true;
                     } else {
                         data.times.forEach(time => {
                             const option = document.createElement('option');
@@ -447,12 +460,17 @@ document.addEventListener('DOMContentLoaded', function() {
                         });
                         bookingTime.disabled = false;
                     }
+                } else {
+                    bookingTime.innerHTML = `<option value="">${data.message || 'Unable to load slots'}</option>`;
+                    bookingTime.disabled = true;
                 }
                 updateButtonState();
             })
             .catch(error => {
+                if (requestId !== fetchRequestId) return;
                 console.error('Error:', error);
-                bookingTime.innerHTML = '<option value="">Error</option>';
+                bookingTime.innerHTML = '<option value="">Error loading slots</option>';
+                bookingTime.disabled = true;
                 updateButtonState();
             });
     }
@@ -461,8 +479,12 @@ document.addEventListener('DOMContentLoaded', function() {
         check.addEventListener('change', updateTotals);
     });
 
+    bookingDate.addEventListener('input', updateTotals);
     bookingDate.addEventListener('change', updateTotals);
     bookingTime.addEventListener('change', () => updateButtonState());
+
+    // Initial check
+    updateTotals();
 
     // Star Rating
     const stars = document.querySelectorAll('.star-btn');
